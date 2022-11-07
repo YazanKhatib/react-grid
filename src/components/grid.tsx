@@ -38,7 +38,6 @@ export const Grid: React.FC<gridProps> = ({
   data,
   columns,
   loading,
-  resource,
   pageNumber,
   del = true,
   edit = true,
@@ -47,8 +46,6 @@ export const Grid: React.FC<gridProps> = ({
   onSelect,
   setPageNumber,
 }) => {
-  const [popup, setPopup] = React.useState(false);
-  const [recordId, setRecordId] = React.useState('');
   const [checked, setChecked] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState('');
   const [selected, setSelected] = React.useState<string[]>([]);
@@ -58,26 +55,17 @@ export const Grid: React.FC<gridProps> = ({
 
   // Temporarily store the search results
   const [searchResults, setSearchResults] = React.useState(data);
-  //   const navigate = useNavigate();
 
-  const onView = (id: string) => {
+  const onView = () => {
     // navigate(`/${pluralize(resource)}/` + id);
   };
 
-  const onEdit = (id: string) => {
+  const onEdit = () => {
     // navigate(`/${pluralize(resource)}/edit/` + id);
   };
 
   // params: any
-  const onDelete = async (id: string) => {
-    try {
-      setPopup(true);
-      setRecordId(id);
-    } catch (e) {
-      // @ts-ignore
-      //   toast.error(e.message);
-    }
-  };
+  const onDelete = async () => {};
 
   const onRowSelection = (value: any, id: string) => {
     var result: string[] = selected;
@@ -230,27 +218,21 @@ export const Grid: React.FC<gridProps> = ({
                       <div className="flex w-[7%]">
                         <If condition={show}>
                           <Then>
-                            <button
-                              className="mr-4"
-                              onClick={() => onView(d.id)}
-                            >
+                            <button className="mr-4" onClick={() => onView()}>
                               {/* <FontAwesomeIcon size="1x" icon={faEye} color="#406882" /> */}
                             </button>
                           </Then>
                         </If>
                         <If condition={edit}>
                           <Then>
-                            <button
-                              className="mr-4"
-                              onClick={() => onEdit(d.id)}
-                            >
+                            <button className="mr-4" onClick={() => onEdit()}>
                               <Pencil color="light" />
                             </button>
                           </Then>
                         </If>
                         <If condition={del}>
                           <Then>
-                            <button onClick={() => onDelete(d.id)}>
+                            <button onClick={() => onDelete()}>
                               <Trash color="light" />
                             </button>
                           </Then>
