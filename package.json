@@ -35,7 +35,7 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "components-library",
+  "name": "yaa-grid",
   "author": "Yazan Alkhatib",
   "module": "dist/components-library.esm.js",
   "size-limit": [
