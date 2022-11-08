@@ -50,7 +50,7 @@ export const Grid: React.FC<gridProps> = ({
   const [searchValue, setSearchValue] = React.useState('');
   const [selected, setSelected] = React.useState<string[]>([]);
   const fileName = 'download';
-  const exportType = exportFromJSON.types.csv;
+  const exportType = exportFromJSON.types?.csv;
   const pageSize = 3;
 
   // Temporarily store the search results
@@ -172,7 +172,10 @@ export const Grid: React.FC<gridProps> = ({
           </If>
 
           {columns?.map(({ header, width }: any) => (
-            <p className={` ${widthArray[parseInt(width)]} text-dustyBlue`}>
+            <p
+              key={header}
+              className={` ${widthArray[parseInt(width)]} text-dustyBlue`}
+            >
               {header}
             </p>
           ))}
@@ -189,7 +192,8 @@ export const Grid: React.FC<gridProps> = ({
           <If condition={searchResults?.length}>
             <Then>
               {searchResults?.map((d: any) => (
-                <ul
+                <div
+                  key={d.id}
                   className={`flex justify-between border-b-2 border-lightDustyGray px-8 py-3 last:border-b-0 `}
                 >
                   <If condition={select}>
@@ -205,6 +209,7 @@ export const Grid: React.FC<gridProps> = ({
 
                   {columns.map(({ field, width }: any) => (
                     <p
+                      key={field}
                       className={` ${
                         widthArray[parseInt(width)]
                       } text-dustyBlue`}
@@ -240,7 +245,7 @@ export const Grid: React.FC<gridProps> = ({
                       </div>
                     </Then>
                   </If>
-                </ul>
+                </div>
               ))}
 
               <div className="items-center mt-4 flex w-1/5 justify-between pl-4">
