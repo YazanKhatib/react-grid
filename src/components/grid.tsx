@@ -127,12 +127,12 @@ export const Grid: React.FC<gridProps> = ({
           </div>
 
           <label className="relative block text-gray-400 focus-within:text-gray-600">
-            <img
+            {/* <img
               width="20px"
               alt="search icon"
               src={require('../icons/search.svg')}
               className="pointer-events-none absolute top-1/2 right-5 -translate-y-1/2 transform"
-            />
+            /> */}
 
             <input
               value={searchValue}
