@@ -1,3 +1,4 @@
+export * from './eye';
 export * from './trash';
 export * from './pencil';
 export * from './search';

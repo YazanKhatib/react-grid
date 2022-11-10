@@ -18,7 +18,7 @@ export const RightArrow: React.FC<myProps> = ({
       width="25"
       height="25"
       viewBox="0 0 21 21"
-      fill={color === 'light' ? '#1A374D' : '#ECEDF3'}
+      fill={color === 'light' ? '#406882' : '#ECEDF3'}
       xmlns="http://www.w3.org/2000/svg"
     >
       <path

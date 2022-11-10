@@ -9,24 +9,15 @@ import ClipLoader from 'react-spinners/ClipLoader';
 import _, { round } from 'lodash';
 import exportFromJSON from 'export-from-json';
 import { Else, If, Then } from 'react-if';
-import {
-  Trash,
-  Search,
-  Pencil,
-  Download,
-  LeftArrow,
-  RightArrow,
-  DoubleLeftArrow,
-  DoubleRightArrow,
-} from '../icons';
+import { Trash, Pencil, Download, Eye } from '../icons';
 
 export interface gridProps {
   data: any;
   columns: any;
   resource: string;
-  del?: boolean;
-  edit?: boolean;
-  show?: boolean;
+  onView?: (id: string) => {};
+  onEdit?: (id: string) => {};
+  onDelete?: (id: string) => {};
   select?: boolean;
   loading: boolean;
   onSelect?: (ids: string[]) => void;
@@ -38,11 +29,11 @@ export const Grid: React.FC<gridProps> = ({
   data,
   columns,
   loading,
-  pageNumber,
-  del = true,
-  edit = true,
-  show = false,
+  pageNumber = 1,
   select = false,
+  onView,
+  onEdit,
+  onDelete,
   onSelect,
   setPageNumber,
 }) => {
@@ -51,21 +42,10 @@ export const Grid: React.FC<gridProps> = ({
   const [selected, setSelected] = React.useState<string[]>([]);
   const fileName = 'download';
   const exportType = exportFromJSON.types?.csv;
-  const pageSize = 3;
+  const pageSize = 10;
 
   // Temporarily store the search results
   const [searchResults, setSearchResults] = React.useState(data);
-
-  const onView = () => {
-    // navigate(`/${pluralize(resource)}/` + id);
-  };
-
-  const onEdit = () => {
-    // navigate(`/${pluralize(resource)}/edit/` + id);
-  };
-
-  // params: any
-  const onDelete = async () => {};
 
   const onRowSelection = (value: any, id: string) => {
     var result: string[] = selected;
@@ -143,17 +123,23 @@ export const Grid: React.FC<gridProps> = ({
             onClick={() => exportFromJSON({ data, fileName, exportType })}
           >
             <Download color="light" />
-            <p className="text-dustyBlue">Excel export</p>
+            <p className="text-dustyBlue ml-2">Excel export</p>
           </div>
 
-          <label className="items-center flex relative text-gray-400 focus-within:text-gray-600">
+          <label className="relative block text-gray-400 focus-within:text-gray-600">
+            <img
+              width="20px"
+              alt="search icon"
+              src={require('../icons/search.svg')}
+              className="pointer-events-none absolute top-1/2 right-5 -translate-y-1/2 transform"
+            />
+
             <input
               value={searchValue}
-              onChange={(e: any) => setSearchValue(e.target.value)}
               placeholder="Search"
-              className="rounded-lg bg-dustyGray mr-2 px-2 py-1 text-dustyBlue outline-none placeholder:text-dustyBlue"
+              onChange={(e: any) => setSearchValue(e.target.value)}
+              className="rounded-lg bg-dustyGray px-2 py-1 text-dustyBlue outline-none placeholder:text-dustyBlue"
             />
-            <Search color="light" />
           </label>
         </div>
 
@@ -180,9 +166,17 @@ export const Grid: React.FC<gridProps> = ({
             </p>
           ))}
 
-          <If condition={show || edit || del}>
+          {console.log(onView)}
+
+          <If
+            condition={
+              onView !== undefined ||
+              onEdit !== undefined ||
+              onDelete !== undefined
+            }
+          >
             <Then>
-              <p className="w-[7%] text-dustyBlue">Actions</p>
+              <p className="w-[10 %] text-dustyBlue">Actions</p>
             </Then>
           </If>
         </div>
@@ -218,26 +212,40 @@ export const Grid: React.FC<gridProps> = ({
                     </p>
                   ))}
 
-                  <If condition={show || edit || del}>
+                  <If
+                    condition={
+                      onView !== undefined ||
+                      onEdit !== undefined ||
+                      onDelete !== undefined
+                    }
+                  >
                     <Then>
-                      <div className="flex w-[7%]">
-                        <If condition={show}>
+                      <div className="flex w-[10%]">
+                        <If condition={onView !== undefined}>
                           <Then>
-                            <button className="mr-4" onClick={() => onView()}>
-                              {/* <FontAwesomeIcon size="1x" icon={faEye} color="#406882" /> */}
+                            <button
+                              className="mr-2"
+                              onClick={() => onView!(d.id)}
+                            >
+                              <Eye color="light" />
                             </button>
                           </Then>
                         </If>
-                        <If condition={edit}>
+
+                        <If condition={onEdit !== undefined}>
                           <Then>
-                            <button className="mr-4" onClick={() => onEdit()}>
+                            <button
+                              className="mr-2"
+                              onClick={() => onEdit!(d.id)}
+                            >
                               <Pencil color="light" />
                             </button>
                           </Then>
                         </If>
-                        <If condition={del}>
+
+                        <If condition={onDelete !== undefined}>
                           <Then>
-                            <button onClick={() => onDelete()}>
+                            <button onClick={() => onDelete!(d.id)}>
                               <Trash color="light" />
                             </button>
                           </Then>
@@ -248,31 +256,35 @@ export const Grid: React.FC<gridProps> = ({
                 </div>
               ))}
 
-              <div className="items-center mt-4 flex w-1/5 justify-between pl-4">
-                <DoubleLeftArrow
-                  color="light"
+              <div className="mt-4 flex w-1/5 pl-4 justify-between">
+                <img
+                  width={22}
+                  alt="double arrow icon"
                   className="cursor-pointer"
                   onClick={() => paginate('first')}
+                  src={require('../icons/chevron-double-left.svg')}
                 />
-
-                <LeftArrow
-                  color="light"
-                  className="mt-3 cursor-pointer"
+                <img
+                  className="cursor-pointer"
+                  width={9}
+                  alt="left arrow"
                   onClick={() => paginate('previous')}
+                  src={require('../icons/arrow-left.svg')}
                 />
-
-                <p className="text-dustyBlue mr-3">{pageNumber}</p>
-
-                <RightArrow
-                  color="light"
-                  className="mt-3 cursor-pointer"
+                <p className="text-dustyBlue">{pageNumber}</p>
+                <img
+                  width={9}
+                  alt="right arrow"
+                  className="cursor-pointer"
                   onClick={() => paginate('next')}
+                  src={require('../icons/arrow-right.svg')}
                 />
-
-                <DoubleRightArrow
-                  color="light"
+                <img
+                  width={22}
+                  alt="double arrow icon"
                   className="cursor-pointer"
                   onClick={() => paginate('last')}
+                  src={require('../icons/chevron-double-right.svg')}
                 />
               </div>
             </Then>
