@@ -135,7 +135,7 @@ export const Grid: React.FC<gridProps> = ({
         onToggle={() => setPopup(!popup)}
       /> */}
 
-      <div className="overflow-hidden rounded-xl border border-dustyGray">
+      <div className="overflow-hidden rounded-xl border border-dustyGray w-full">
         {/* Grid toolbar */}
         <div className="flex justify-between py-2 px-8">
           <div
@@ -194,11 +194,10 @@ export const Grid: React.FC<gridProps> = ({
         <div className="py-4">
           <If condition={searchResults?.length}>
             <Then>
-              {console.log({ searchResults })}
               {searchResults?.map((d: any) => (
                 <div
                   key={d.id}
-                  className={`flex justify-between border-b-2 border-lightDustyGray px-8 py-3 last:border-b-0 `}
+                  className={`flex justify-between border-b-2 border-lightDustyGray px-8 py-3 last:border-b-0`}
                 >
                   <If condition={select}>
                     <Then>
