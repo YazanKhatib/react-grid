@@ -1,7 +1,8 @@
 // stories/Grid.stories.tsx
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
-import { Grid, gridProps } from '../src/components/grid';
+import { Grid } from '../src/components/grid';
+import { gridProps } from '../src/types';
 
 const meta: Meta = {
   title: 'Grid example',
@@ -49,6 +50,7 @@ const data = [
     status: 'active',
   },
 ];
+
 export default meta;
 const Template: Story<gridProps> = args => <Grid {...args} />;
 export const Default = Template.bind({});
@@ -59,4 +61,5 @@ Default.args = {
   resource: 'user',
   data: data,
   pageNumber: 1,
+  pageSize: 2,
 };

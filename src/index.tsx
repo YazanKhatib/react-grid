@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import './index.css';
 
 export * from './components/grid';
@@ -13,3 +14,5 @@ export * from './components/tabs';
 export const App: React.FC = () => {
   return <h1>App</h1>;
 };
+
+ReactDOM.render(<App />, document.getElementById('root'));
