@@ -39,7 +39,6 @@ export const Grid: React.FC<gridProps> = ({
     setSelected(result);
   };
 
-  console.log('test');
   React.useEffect(() => {
     console.log({ searchResults });
   }, [searchResults]);
@@ -85,12 +84,13 @@ export const Grid: React.FC<gridProps> = ({
         const start = (pageNumber - 1) * pageSize;
         console.log({ count, pageSize, start });
 
+        console.log(data);
         const result = data?.slice(start, start + pageSize);
         console.log({ result });
         setSearchResults(result);
       }
 
-      // TODO: Search functionality
+      //* Search functionality
       if (searchValue) {
         for (var i = 0; i < data?.length; i++) {
           for (var key in data[i]) {
