@@ -39,6 +39,11 @@ export const Grid: React.FC<gridProps> = ({
     setSelected(result);
   };
 
+  console.log('test');
+  React.useEffect(() => {
+    console.log({ searchResults });
+  }, [searchResults]);
+
   /*
    * Pagination logic
    */
@@ -78,8 +83,10 @@ export const Grid: React.FC<gridProps> = ({
 
       if (count > pageSize) {
         const start = (pageNumber - 1) * pageSize;
+        console.log({ count, pageSize, start });
 
         const result = data?.slice(start, start + pageSize);
+        console.log({ result });
         setSearchResults(result);
       }
 
