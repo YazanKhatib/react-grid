@@ -78,17 +78,12 @@ export const Grid: React.FC<gridProps> = ({
     const searchFunc = async () => {
       var results = [];
 
-      const count = totalRecords === undefined ? data?.length : totalRecords;
+      const start = (pageNumber - 1) * pageSize;
+      console.log({ pageSize, start });
 
-      if (count > pageSize) {
-        const start = (pageNumber - 1) * pageSize;
-        console.log({ count, pageSize, start });
-
-        console.log(data);
-        const result = data?.slice(start, start + pageSize);
-        console.log({ result });
-        setSearchResults(result);
-      }
+      const result = data?.slice(start, start + pageSize);
+      console.log({ result });
+      setSearchResults(result);
 
       //* Search functionality
       if (searchValue) {

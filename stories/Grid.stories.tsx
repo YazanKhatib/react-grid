@@ -72,5 +72,4 @@ Default.args = {
   columns: columns,
   resource: 'user',
   data: data,
-  pageSize: 1,
 };
