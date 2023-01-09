@@ -175,7 +175,9 @@ export const Grid: React.FC<gridProps> = ({
 
           <If condition={onView !== undefined || onEdit !== undefined || onDelete !== undefined}>
             <Then>
-              <p className="w-[10%] text-dustyBlue">Actions</p>
+              <p className="text-dustyBlue" style={{ width: '7%' }}>
+                Actions
+              </p>
             </Then>
           </If>
         </div>
@@ -208,7 +210,7 @@ export const Grid: React.FC<gridProps> = ({
 
                   <If condition={onView !== undefined || onEdit !== undefined || onDelete !== undefined}>
                     <Then>
-                      <div className="flex w-[10%]">
+                      <div className="flex" style={{ width: '7%' }}>
                         <If condition={onView !== undefined}>
                           <Then>
                             <button className="mr-2" onClick={() => onView!(d.id)}>
@@ -238,7 +240,7 @@ export const Grid: React.FC<gridProps> = ({
                 </div>
               ))}
 
-              <div className="mt-4 flex w-2/12 pl-4 justify-between items-center">
+              <div className="mt-4 flex pl-4 justify-between items-center" style={{ width: '20%' }}>
                 <PaginationComponent pageNumber={pageNumber} paginate={paginate} />
               </div>
             </Then>
