@@ -11,6 +11,48 @@ To install the Grid and its dependent packages, use the following command.
 npm install yaa-grid # or yarn add
 ```
 
+The package uses tailwind under the hood, install tailwind https://tailwindcss.com/docs/installation
+and add this to your configuration
+
+```js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ['./**/*.{html,js,ts,tsx}'],
+  theme: {
+    extend: {
+      screens: {
+        sidebar: '300px',
+      },
+      width: {
+        xs: '5%',
+        sm: '10%',
+        lg: '20%',
+      },
+      colors: {
+        dustyLightBlue: '#B1D0E0',
+        dustyBlue: '#406882',
+        darkBlue: '#1A374D',
+        dustyGray: '#CDCED8',
+        eggshellWhite: '#F6F4F5',
+        lightDustyGray: '#ECEDF3',
+        dustyGreenBlue: '#6998AB',
+        darkBlueBrown: '#272034',
+        darkBlueBrownHover: '#393049',
+        primary: '#7DBC2C',
+        secondary: '#039FC8',
+        input: '#CCCCCC',
+        background: '#f0f2f5',
+      },
+      fontFamily: {
+        arial: ['arial'],
+        assistant: ['Assistant'],
+      },
+    },
+  },
+  plugins: [],
+};
+```
+
 ## Using the library
 
 Now it’s time to cover use cases. Starting from its basic form.
@@ -39,17 +81,17 @@ const columns = [
 
 ## Props
 
-| Name            | Type                                               | Description          |
-| --------------- | -------------------------------------------------- | -------------------- |
-| `data`          | any                                                | Name of the resource |
-| `columns`       | { field: string; header: string; width: number }[] | Path to the resource |
-| `resource`      | string                                             | Path to the resource |
-| `select`        | boolean                                            | Path to the resource |
-| `loading`       | boolean                                            | Path to the resource |
-| `pageNumber`    | number                                             | Path to the resource |
-| `totalRecords`  | number                                             | Path to the resource |
-| `onView`        | (id: string) => void                               | Path to the resource |
-| `onEdit`        | (id: string) => void                               | Path to the resource |
-| `onDelete`      | (id: string) => void                               | Path to the resource |
-| `onSelect`      | (ids: string[]) => void                            | Path to the resource |
-| `setPageNumber` | React.Dispatch<React.SetStateAction<number>>       | Path to the resource |
+| Name            | Type                                               | Description                           |
+| --------------- | -------------------------------------------------- | ------------------------------------- |
+| `data`          | any                                                | Data source                           |
+| `columns`       | { field: string; header: string; width: number }[] | Data shape                            |
+| `resource`      | string                                             |                                       |
+| `select`        | boolean                                            | Enable to select records              |
+| `loading`       | boolean                                            | Enable to display a loading indicator |
+| `pageNumber`    | number                                             | Defaults to 1                         |
+| `totalRecords`  | number                                             | Defaults to array size                |
+| `onView`        | (id: string) => void                               |                                       |
+| `onEdit`        | (id: string) => void                               |                                       |
+| `onDelete`      | (id: string) => void                               |                                       |
+| `onSelect`      | (ids: string[]) => void                            | Perform action on selected records    |
+| `setPageNumber` | React.Dispatch<React.SetStateAction<number>>       | Pagination                            |

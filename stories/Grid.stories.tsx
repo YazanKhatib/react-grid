@@ -49,10 +49,22 @@ const data = [
     phoneNumber: '0522232452',
     status: 'active',
   },
+  {
+    id: '5bffef1d-9856-4428-8682-1c5eab9f10b7',
+    username: 'john3',
+    firstName: 'john',
+    lastName: 'doe',
+    email: 'johndoe3@email.com',
+    phoneNumber: '0522232452',
+    status: 'active',
+  },
 ];
 
 export default meta;
-const Template: Story<gridProps> = args => <Grid {...args} />;
+const Template: Story<gridProps> = args => {
+  const [pageNumber, setPageNumber] = React.useState(1);
+  return <Grid {...args} pageNumber={pageNumber} setPageNumber={setPageNumber} />;
+};
 export const Default = Template.bind({});
 
 Default.args = {
@@ -60,6 +72,5 @@ Default.args = {
   columns: columns,
   resource: 'user',
   data: data,
-  pageNumber: 1,
-  pageSize: 2,
+  pageSize: 10,
 };
