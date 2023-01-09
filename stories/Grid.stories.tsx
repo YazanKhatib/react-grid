@@ -51,10 +51,10 @@ const data = [
   },
   {
     id: '5bffef1d-9856-4428-8682-1c5eab9f10b7',
-    username: 'john3',
-    firstName: 'john',
-    lastName: 'doe',
-    email: 'johndoe3@email.com',
+    username: 'samabbas',
+    firstName: 'Sam',
+    lastName: 'Abbas',
+    email: 'samabbas@email.com',
     phoneNumber: '0522232452',
     status: 'active',
   },
@@ -72,5 +72,5 @@ Default.args = {
   columns: columns,
   resource: 'user',
   data: data,
-  pageSize: 10,
+  pageSize: 1,
 };
