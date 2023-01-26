@@ -14,9 +14,7 @@ export const Tabs: React.FC<tabsProps> = ({ tabs, active, setActive }) => {
           <button
             onClick={() => setActive(id)}
             className={` ${
-              active === id
-                ? 'bg-dustyBlue font-bold text-white'
-                : 'bg-white font-normal text-dustyBlue'
+              active === id ? 'bg-dustyBlue font-bold text-white' : 'bg-white font-normal text-dustyBlue'
             } mr-2 w-1/4 rounded-t-lg py-3`}
           >
             {name}

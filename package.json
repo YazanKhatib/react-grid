@@ -2,6 +2,9 @@
   "name": "components-library",
   "private": true,
   "workspaces": {
-    "packages": ["packages/*", "sites/*"]
+    "packages": [
+      "packages/*",
+      "sites/*"
+    ]
   }
 }

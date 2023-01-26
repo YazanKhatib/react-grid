@@ -33,23 +33,11 @@
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "lint:fix": "eslint --fix 'src/**/*.{jsx,ts,tsx}'",
     "format": "prettier --write src//**/*.{ts,tsx,css} --config ./.prettierrc",
-    "prepare": "husky install",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
   "peerDependencies": {
     "react": ">=16"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx}": [
-      "yarn  eslint",
-      "yarn  format"
-    ]
   },
   "devDependencies": {
     "@babel/core": "^7.20.2",
@@ -64,7 +52,6 @@
     "babel-loader": "^9.1.0",
     "eslint": "^8.32.0",
     "eslint-plugin-simple-import-sort": "^9.0.0",
-    "husky": "^8.0.1",
     "postcss": "^8.4.21",
     "prettier": "^2.8.3",
     "react": "^18.2.0",
