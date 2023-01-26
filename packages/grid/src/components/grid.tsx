@@ -1,16 +1,17 @@
 import * as React from 'react';
 import ClipLoader from 'react-spinners/ClipLoader';
-import _, { round } from 'lodash';
+import _, { ceil } from 'lodash';
 import exportFromJSON from 'export-from-json';
 import { Else, If, Then } from 'react-if';
-import { gridProps } from 'types';
-import { Trash, Pencil, Download, Eye } from '../icons';
+import { gridProps } from '../types';
+import { Trash, Pencil, Download, Eye, Search } from '../icons';
 import PaginationComponent from './pagination';
+import '../index.css';
 
 export const Grid: React.FC<gridProps> = ({
   data,
   columns,
-  loading,
+  loading = false,
   pageSize = 10,
   pageNumber = 1,
   totalRecords,
@@ -34,7 +35,7 @@ export const Grid: React.FC<gridProps> = ({
     var result: string[] = selected;
 
     if (value) result.push(id);
-    else result = result.filter(v => v !== id);
+    else result = result.filter((v) => v !== id);
 
     setSelected(result);
   };
@@ -57,16 +58,17 @@ export const Grid: React.FC<gridProps> = ({
      */
 
     totalRecords = totalRecords === undefined ? data?.length : totalRecords;
+    console.log(pageNumber! + 1 <= ceil(totalRecords! / pageSize));
 
     switch (action) {
       case 'first':
         return setPageNumber!(1);
       case 'next':
-        return pageNumber! + 1 <= round(totalRecords! / pageSize) && setPageNumber!(pageNumber! + 1);
+        return pageNumber! + 1 <= ceil(totalRecords! / pageSize) && setPageNumber!(pageNumber! + 1);
       case 'previous':
         return pageNumber! > 1 && setPageNumber!(pageNumber! - 1);
       case 'last':
-        return totalRecords! > pageSize && setPageNumber!(round(totalRecords! / pageSize));
+        return totalRecords! > pageSize && setPageNumber!(ceil(totalRecords! / pageSize));
     }
   };
 
@@ -91,11 +93,8 @@ export const Grid: React.FC<gridProps> = ({
           for (var key in data[i]) {
             if (typeof _.get(data[i], key) !== 'string') continue;
 
-            if (
-              _.get(data[i], key)
-                .toLowerCase()
-                .indexOf(searchValue.toLowerCase()) !== -1
-            ) {
+            if (_.get(data[i], key).toLowerCase().indexOf(searchValue.toLowerCase()) !== -1) {
+              console.log('sup', data[i]);
               results.push(data[i]);
               break;
             }
@@ -116,17 +115,6 @@ export const Grid: React.FC<gridProps> = ({
     </div>
   ) : (
     <>
-      {/* // TODO: Delete confirmation popup */}
-      {/* <Popup
-        status={popup}
-        onSubmit={async () => {
-          setPopup(!popup);
-          await axios.delete(`/api/${resource}/${recordId}`);
-          navigate(0);
-        }}
-        onToggle={() => setPopup(!popup)}
-      /> */}
-
       <div className="overflow-hidden rounded-xl border border-dustyGray w-full">
         {/* Grid toolbar */}
         <div className="flex justify-between py-2 px-8">
@@ -139,12 +127,9 @@ export const Grid: React.FC<gridProps> = ({
           </div>
 
           <label className="relative block text-gray-400 focus-within:text-gray-600">
-            {/* <img
-              width="20px"
-              alt="search icon"
-              src={require('../icons/search.svg')}
-              className="pointer-events-none absolute top-1/2 right-5 -translate-y-1/2 transform"
-            /> */}
+            <div className="pointer-events-none absolute top-1/2 right-1 -translate-y-1/2 mt-[2px] transform">
+              <Search color="light" />
+            </div>
 
             <input
               value={searchValue}
@@ -174,7 +159,6 @@ export const Grid: React.FC<gridProps> = ({
               {header}
             </p>
           ))}
-
           <If condition={onView !== undefined || onEdit !== undefined || onDelete !== undefined}>
             <Then>
               <p className="text-dustyBlue" style={{ width: '7%' }}>
@@ -198,7 +182,7 @@ export const Grid: React.FC<gridProps> = ({
                       <input
                         type="checkbox"
                         defaultChecked={checked}
-                        onChange={e => onRowSelection(e.target.checked, d.id)}
+                        onChange={(e) => onRowSelection(e.target.checked, d.id)}
                         className="w-[15px] accent-dustyBlue"
                       />
                     </Then>
@@ -242,10 +226,15 @@ export const Grid: React.FC<gridProps> = ({
                 </div>
               ))}
 
-              <div className="mt-4 flex pl-4 justify-between items-center" style={{ width: '20%' }}>
-                <PaginationComponent pageNumber={pageNumber} paginate={paginate} />
-              </div>
+              <If condition={pageSize < data?.length}>
+                <Then>
+                  <div className="mt-4 flex pl-4 justify-between items-center" style={{ width: '20%' }}>
+                    <PaginationComponent pageNumber={pageNumber} paginate={paginate} />
+                  </div>
+                </Then>
+              </If>
             </Then>
+
             <Else>
               <p className="flex justify-center font-assistant text-lg text-dustyBlue">No data to display</p>
             </Else>

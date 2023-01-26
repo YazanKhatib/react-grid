@@ -2,7 +2,7 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
 import { Tabs, tabsProps } from '../src/components/tabs';
-import '../src/index';
+import '../src/index.css';
 
 const meta: Meta = {
   title: 'Tabs example',
@@ -18,7 +18,7 @@ const tabs = [
 ];
 
 export default meta;
-const Template: Story<tabsProps> = args => <Tabs {...args} />;
+const Template: Story<tabsProps> = (args) => <Tabs {...args} />;
 export const Default = Template.bind({});
 
 Default.args = {

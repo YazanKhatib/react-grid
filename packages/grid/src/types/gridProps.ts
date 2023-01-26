@@ -1,9 +1,9 @@
 export interface gridProps {
   data: any;
-  columns: { field: string; header: string; width: number }[];
+  columns: { field: string; header: string; width: string }[];
   resource: string;
   select?: boolean;
-  loading: boolean;
+  loading?: boolean;
   pageNumber?: number;
   pageSize?: number;
   totalRecords?: number;

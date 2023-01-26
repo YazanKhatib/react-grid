@@ -9,8 +9,8 @@ export const Search: React.FC<myProps> = ({ color, onClick }) => {
   return (
     <svg
       onClick={onClick}
-      width="28"
-      height="28"
+      width="22"
+      height="22"
       viewBox="0 0 21 21"
       fill={color === 'light' ? '#406882' : '#ECEDF3'}
       xmlns="http://www.w3.org/2000/svg"

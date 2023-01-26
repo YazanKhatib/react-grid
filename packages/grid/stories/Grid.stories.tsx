@@ -63,7 +63,9 @@ const data = [
 export default meta;
 const Template: Story<gridProps> = args => {
   const [pageNumber, setPageNumber] = React.useState(1);
-  return <Grid {...args} pageNumber={pageNumber} setPageNumber={setPageNumber} />;
+  return (
+    <Grid {...args} pageNumber={pageNumber} setPageNumber={setPageNumber} onSelect={() => console.log('selected')} />
+  );
 };
 export const Default = Template.bind({});
 
@@ -72,4 +74,5 @@ Default.args = {
   columns: columns,
   resource: 'user',
   data: data,
+  select: true,
 };
