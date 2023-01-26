@@ -6,11 +6,7 @@ interface myProps {
   onClick?: () => void;
 }
 
-export const DoubleLeftArrow: React.FC<myProps> = ({
-  color,
-  onClick,
-  className,
-}) => {
+export const DoubleLeftArrow: React.FC<myProps> = ({ color, onClick, className }) => {
   return (
     <svg
       width="22"

@@ -6,11 +6,7 @@ interface myProps {
   className?: string;
 }
 
-export const RightArrow: React.FC<myProps> = ({
-  color,
-  onClick,
-  className,
-}) => {
+export const RightArrow: React.FC<myProps> = ({ color, onClick, className }) => {
   return (
     <svg
       className={className}
