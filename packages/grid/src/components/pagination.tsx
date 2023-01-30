@@ -2,10 +2,11 @@ import * as React from 'react';
 
 interface myProps {
   pageNumber: number;
+  pages: number;
   paginate: (x: string) => void;
 }
 
-const PaginationComponent: React.FC<myProps> = ({ pageNumber, paginate }) => {
+const PaginationComponent: React.FC<myProps> = ({ pageNumber, pages, paginate }) => {
   return (
     <>
       <div className="cursor-pointer" onClick={() => paginate('first')}>
@@ -30,7 +31,9 @@ const PaginationComponent: React.FC<myProps> = ({ pageNumber, paginate }) => {
           />
         </svg>
       </div>
-      <p className="text-dustyBlue">{pageNumber}</p>
+      <p className="text-dustyBlue">
+        {pageNumber} / {pages}
+      </p>
 
       <div className="cursor-pointer" onClick={() => paginate('next')}>
         <svg width="7" height="11" viewBox="0 0 7 11" fill="none" xmlns="http://www.w3.org/2000/svg">

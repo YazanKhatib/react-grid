@@ -21,10 +21,6 @@ module.exports = {
         dustyGreenBlue: '#6998AB',
         darkBlueBrown: '#272034',
         darkBlueBrownHover: '#393049',
-        primary: '#7DBC2C',
-        secondary: '#039FC8',
-        input: '#CCCCCC',
-        background: '#f0f2f5',
       },
       fontFamily: {
         arial: ['arial'],
