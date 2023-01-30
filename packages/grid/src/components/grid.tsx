@@ -1,10 +1,10 @@
 import * as React from 'react';
 import ClipLoader from 'react-spinners/ClipLoader';
-import _, { ceil } from 'lodash';
 import exportFromJSON from 'export-from-json';
+import { ceil, get } from 'lodash';
 import { Else, If, Then } from 'react-if';
 import { gridProps } from '../types';
-import { Trash, Pencil, Download, Eye, Search } from '../icons';
+import { Trash, Pencil, Download, Eye, Search, ArrowUp, ArrowDown } from '../icons';
 import PaginationComponent from './pagination';
 import '../index.css';
 
@@ -15,21 +15,30 @@ export const Grid: React.FC<gridProps> = ({
   pageSize = 10,
   pageNumber = 1,
   totalRecords,
-  select = false,
   onView,
   onEdit,
   onDelete,
   onSelect,
   setPageNumber,
 }) => {
+  // Temporarily store the search results
+  const [renderedData, setRenderedData] = React.useState(data);
   const [checked, setChecked] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState('');
   const [selected, setSelected] = React.useState<string[]>([]);
+
+  /*
+   * state for sorting data by a specific column
+   * 0: original order
+   * 1: alphabatical order
+   * 2: reverse alphabatical order
+   */
+  const [sorted, setSorted] = React.useState({
+    column: '',
+    status: 0,
+  });
   const fileName = 'download';
   const exportType = exportFromJSON.types?.csv;
-
-  // Temporarily store the search results
-  const [searchResults, setSearchResults] = React.useState(data);
 
   const onRowSelection = (value: any, id: string) => {
     var result: string[] = selected;
@@ -41,24 +50,21 @@ export const Grid: React.FC<gridProps> = ({
   };
 
   React.useEffect(() => {
-    console.log({ searchResults });
-  }, [searchResults]);
+    setRenderedData(data);
+  }, [data]);
 
   /*
    * Pagination logic
    */
   const paginate = (action: string) => {
     /*
-     * TODO
      * Backend pagination (totalRecords, pageSize and PageNumber)
-     * Data is recieved from the backend, you don't need to handle it.
+     * Data is recieved from the backend
      *
      * Frontend pagination (pageSize, pageNumber)
-     * You need to split the data
      */
 
     totalRecords = totalRecords === undefined ? data?.length : totalRecords;
-    console.log(pageNumber! + 1 <= ceil(totalRecords! / pageSize));
 
     switch (action) {
       case 'first':
@@ -72,48 +78,83 @@ export const Grid: React.FC<gridProps> = ({
     }
   };
 
+  /*
+   * Sorting the data
+   */
   React.useEffect(() => {
-    /*
-     * Need to split the data based on pagination parameters
-     * Search will be based on all of the data
-     */
+    if (sorted.status) {
+      let condition = false;
+      let reversedCondition = false;
+
+      const result = [...data].sort((a: any, b: any) => {
+        condition =
+          sorted.status === 1
+            ? get(a, sorted.column) > get(b, sorted.column)
+            : get(a, sorted.column) < get(b, sorted.column);
+
+        reversedCondition =
+          sorted.status === 1
+            ? get(a, sorted.column) < get(b, sorted.column)
+            : get(a, sorted.column) > get(b, sorted.column);
+
+        return condition ? 1 : reversedCondition ? -1 : 0;
+      });
+
+      // TODO: check whether this logic is valid in all cases
+      if (totalRecords === undefined) {
+        // Splitting data in frontend pagination
+        const start = (pageNumber - 1) * pageSize;
+        const sortedPaginatedResult = result?.slice(start, start + pageSize);
+        setRenderedData(sortedPaginatedResult);
+      } else setRenderedData(result);
+    } else {
+      if (totalRecords === undefined) {
+        // Splitting data in frontend pagination
+
+        const start = (pageNumber - 1) * pageSize;
+        const paginatedResult = data?.slice(start, start + pageSize);
+        setRenderedData(paginatedResult);
+      } else setRenderedData(data);
+    }
+  }, [sorted, pageNumber, data]);
+
+  /*
+   * Search and Pagination
+   */
+  React.useEffect(() => {
     const searchFunc = async () => {
       var results = [];
-
-      const start = (pageNumber - 1) * pageSize;
-      console.log({ pageSize, start });
-
-      const result = data?.slice(start, start + pageSize);
-      console.log({ result });
-      setSearchResults(result);
 
       //* Search functionality
       if (searchValue) {
         for (var i = 0; i < data?.length; i++) {
           for (var key in data[i]) {
-            if (typeof _.get(data[i], key) !== 'string') continue;
+            if (typeof get(data[i], key) !== 'string') continue;
 
-            if (_.get(data[i], key).toLowerCase().indexOf(searchValue.toLowerCase()) !== -1) {
-              console.log('sup', data[i]);
+            if (get(data[i], key).toLowerCase().indexOf(searchValue.toLowerCase()) !== -1) {
               results.push(data[i]);
               break;
             }
           }
         }
-        setSearchResults(results);
+        setRenderedData(results);
+      } else {
+        // Splitting data in frontend pagination
+
+        if (totalRecords === undefined) {
+          const start = (pageNumber - 1) * pageSize;
+          const paginatedResult = data?.slice(start, start + pageSize);
+          setRenderedData(paginatedResult);
+        }
       }
     };
 
     searchFunc();
-  }, [searchValue, pageNumber, data]);
+  }, [searchValue]);
 
   const widthArray = ['w-xs', 'w-sm', 'w-lg'];
 
-  return loading ? (
-    <div className="flex justify-center rounded-lg bg-white p-8">
-      <ClipLoader color="#039FC8" size={80} />
-    </div>
-  ) : (
+  return (
     <>
       <div className="overflow-hidden rounded-xl border border-dustyGray w-full">
         {/* Grid toolbar */}
@@ -143,7 +184,7 @@ export const Grid: React.FC<gridProps> = ({
         {/* Grid header */}
         <div className={` flex justify-between bg-dustyGray px-8 py-3`}>
           {/* //TODO: SelectAll functionality */}
-          <If condition={select}>
+          <If condition={onSelect !== undefined}>
             <Then>
               <input
                 className="invisible w-[15px] accent-dustyBlue"
@@ -154,9 +195,36 @@ export const Grid: React.FC<gridProps> = ({
             </Then>
           </If>
 
-          {columns?.map(({ header, width }: any) => (
-            <p key={header} className={` ${widthArray[parseInt(width)]} text-dustyBlue`}>
+          {columns?.map(({ header, field, width }: any) => (
+            <p
+              key={header}
+              onClick={() =>
+                setSorted((prev) => {
+                  if (prev.column !== field) {
+                    return { column: field, status: 1 };
+                  } else if (prev.column === field && prev.status === 1) {
+                    return { ...prev, status: 2 };
+                  }
+                  return { column: '', status: 0 };
+                })
+              }
+              className={` ${widthArray[parseInt(width)]} text-dustyBlue cursor-pointer flex items-center`}
+            >
               {header}
+              <span className="ml-4">
+                <If condition={sorted.column === field}>
+                  <Then>
+                    <If condition={sorted.status === 1}>
+                      <Then>
+                        <ArrowUp />
+                      </Then>
+                      <Else>
+                        <ArrowDown />
+                      </Else>
+                    </If>
+                  </Then>
+                </If>
+              </span>
             </p>
           ))}
           <If condition={onView !== undefined || onEdit !== undefined || onDelete !== undefined}>
@@ -168,68 +236,80 @@ export const Grid: React.FC<gridProps> = ({
           </If>
         </div>
 
+        {/* //TODO: add height property */}
         {/* Grid data */}
         <div className="py-4">
-          <If condition={searchResults?.length}>
+          <If condition={renderedData?.length}>
             <Then>
-              {searchResults?.map((d: any) => (
-                <div
-                  key={d.id}
-                  className={`flex justify-between border-b-2 border-lightDustyGray px-8 py-3 last:border-b-0`}
-                >
-                  <If condition={select}>
-                    <Then>
-                      <input
-                        type="checkbox"
-                        defaultChecked={checked}
-                        onChange={(e) => onRowSelection(e.target.checked, d.id)}
-                        className="w-[15px] accent-dustyBlue"
-                      />
-                    </Then>
-                  </If>
-
-                  {columns.map(({ field, width }: any) => (
-                    <p key={field} className={` ${widthArray[parseInt(width)]} text-dustyBlue`}>
-                      {_.get(d, field)}
-                    </p>
-                  ))}
-
-                  <If condition={onView !== undefined || onEdit !== undefined || onDelete !== undefined}>
-                    <Then>
-                      <div className="flex" style={{ width: '7%' }}>
-                        <If condition={onView !== undefined}>
-                          <Then>
-                            <button className="mr-2" onClick={() => onView!(d.id)}>
-                              <Eye color="light" />
-                            </button>
-                          </Then>
-                        </If>
-
-                        <If condition={onEdit !== undefined}>
-                          <Then>
-                            <button className="mr-2" onClick={() => onEdit!(d.id)}>
-                              <Pencil color="light" />
-                            </button>
-                          </Then>
-                        </If>
-
-                        <If condition={onDelete !== undefined}>
-                          <Then>
-                            <button onClick={() => onDelete!(d.id)}>
-                              <Trash color="light" />
-                            </button>
-                          </Then>
-                        </If>
-                      </div>
-                    </Then>
-                  </If>
+              {loading && (
+                <div className="flex justify-center rounded-lg bg-white p-8">
+                  <ClipLoader color="#039FC8" size={80} />
                 </div>
-              ))}
+              )}
 
-              <If condition={pageSize < data?.length}>
+              {!loading &&
+                renderedData?.map((d: any) => (
+                  <div
+                    key={d.id}
+                    className={`flex justify-between border-b-2 border-lightDustyGray px-8 py-3 last:border-b-0`}
+                  >
+                    <If condition={onSelect !== undefined}>
+                      <Then>
+                        <input
+                          type="checkbox"
+                          defaultChecked={checked}
+                          onChange={(e) => onRowSelection(e.target.checked, d.id)}
+                          className="w-[15px] accent-dustyBlue"
+                        />
+                      </Then>
+                    </If>
+
+                    {columns.map(({ field, width }: any) => (
+                      <p key={field} className={` ${widthArray[parseInt(width)]} text-dustyBlue truncate`}>
+                        {get(d, field)}
+                      </p>
+                    ))}
+
+                    <If condition={onView !== undefined || onEdit !== undefined || onDelete !== undefined}>
+                      <Then>
+                        <div className="flex" style={{ width: '7%' }}>
+                          <If condition={onView !== undefined}>
+                            <Then>
+                              <button className="mr-2" onClick={() => onView!(d.id)}>
+                                <Eye color="light" />
+                              </button>
+                            </Then>
+                          </If>
+
+                          <If condition={onEdit !== undefined}>
+                            <Then>
+                              <button className="mr-2" onClick={() => onEdit!(d.id)}>
+                                <Pencil color="light" />
+                              </button>
+                            </Then>
+                          </If>
+
+                          <If condition={onDelete !== undefined}>
+                            <Then>
+                              <button onClick={() => onDelete!(d.id)}>
+                                <Trash color="light" />
+                              </button>
+                            </Then>
+                          </If>
+                        </div>
+                      </Then>
+                    </If>
+                  </div>
+                ))}
+
+              <If condition={totalRecords ? pageSize < totalRecords : pageSize < data?.length}>
                 <Then>
                   <div className="mt-4 flex pl-4 justify-between items-center" style={{ width: '20%' }}>
-                    <PaginationComponent pageNumber={pageNumber} paginate={paginate} />
+                    <PaginationComponent
+                      pageNumber={pageNumber}
+                      pages={totalRecords ? ceil(totalRecords / pageSize) : ceil(data?.length / pageSize)}
+                      paginate={paginate}
+                    />
                   </div>
                 </Then>
               </If>
@@ -242,12 +322,12 @@ export const Grid: React.FC<gridProps> = ({
         </div>
       </div>
 
-      <If condition={select}>
+      <If condition={onSelect !== undefined}>
         <Then>
           <button
-            onClick={() => onSelect!(selected)}
             type="submit"
-            className="mt-4 rounded-lg bg-secondary px-5 py-2.5 text-center font-medium text-white focus:outline-none focus:ring-4 focus:ring-blue-300 sm:w-auto"
+            onClick={() => onSelect!(selected)}
+            className="mt-4 rounded-lg bg-dustyBlue px-5 py-2.5 text-center font-medium text-white focus:outline-none focus:ring-4 focus:ring-blue-300 sm:w-auto"
           >
             Submit
           </button>

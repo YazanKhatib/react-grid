@@ -7,3 +7,5 @@ export * from './leftArrow';
 export * from './rightArrow';
 export * from './doubleLeftArrow';
 export * from './doubleRightArrow';
+export * from './arrowUp';
+export * from './arrowDown';
