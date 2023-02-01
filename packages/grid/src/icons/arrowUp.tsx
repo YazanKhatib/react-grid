@@ -19,9 +19,9 @@ export const ArrowUp: React.FC<myProps> = ({ onClick, className }) => {
       <path
         d="M5 10L12 3M12 3L19 10M12 3V21"
         stroke="#406882"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

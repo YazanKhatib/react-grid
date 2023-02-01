@@ -1,5 +1,5 @@
 {
-  "version": "0.1.17",
+  "version": "0.1.29",
   "name": "yaa-grid",
   "author": "Yazan Alkhatib",
   "license": "MIT",
@@ -11,7 +11,8 @@
     "Typescript"
   ],
   "files": [
-    "dist"
+    "dist",
+    "screenshot.png"
   ],
   "exports": {
     ".": {
@@ -58,7 +59,6 @@
     "react-dom": "^18.2.0",
     "storybook-builder-vite": "^0.1.23",
     "tailwindcss": "^3.2.4",
-    "tsdx": "^0.14.1",
     "tslib": "^2.4.1",
     "typescript": "^4.8.4",
     "vite-plugin-dts": "^1.7.1",
@@ -67,12 +67,14 @@
   "dependencies": {
     "@vitejs/plugin-react": "^3.0.1",
     "export-from-json": "^1.7.0",
-    "pluralize": "^8.0.0",
     "react-if": "^4.1.4",
     "react-router-dom": "^6.4.3",
     "react-spinners": "^0.13.6",
-    "react-toastify": "^9.1.1",
     "vite": "^4.0.4",
     "vite-plugin-linter": "^2.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YazanKhatib/react-grid.git"
   }
 }

@@ -10,6 +10,6 @@ export interface gridProps {
   onView?: (id: string) => void;
   onEdit?: (id: string) => void;
   onDelete?: (id: string) => void;
-  onSelect?: (ids: string[]) => void;
+  onSelect?: (ids: number[]) => void;
   setPageNumber?: React.Dispatch<React.SetStateAction<number>>;
 }

@@ -23,9 +23,9 @@ export const Grid: React.FC<gridProps> = ({
 }) => {
   // Temporarily store the search results
   const [renderedData, setRenderedData] = React.useState(data);
-  const [checked, setChecked] = React.useState(false);
+  const [checked, setChecked] = React.useState<number[]>([]);
   const [searchValue, setSearchValue] = React.useState('');
-  const [selected, setSelected] = React.useState<string[]>([]);
+  const [selected, setSelected] = React.useState<number[]>([]);
 
   /*
    * state for sorting data by a specific column
@@ -40,13 +40,8 @@ export const Grid: React.FC<gridProps> = ({
   const fileName = 'download';
   const exportType = exportFromJSON.types?.csv;
 
-  const onRowSelection = (value: any, id: string) => {
-    var result: string[] = selected;
-
-    if (value) result.push(id);
-    else result = result.filter((v) => v !== id);
-
-    setSelected(result);
+  const onRowSelection = (value: any, id: number) => {
+    value ? setSelected([...selected, id]) : setSelected(selected.filter((v) => v !== id));
   };
 
   React.useEffect(() => {
@@ -152,6 +147,25 @@ export const Grid: React.FC<gridProps> = ({
     searchFunc();
   }, [searchValue]);
 
+  const onSelectAllChange = (value: boolean) => {
+    const checkboxes = document.getElementsByName('selectElement');
+
+    let result = selected;
+    console.log({ value });
+    value ? setChecked([...checked, pageNumber]) : setChecked(checked.filter((e) => e !== pageNumber));
+    console.log({ first: result });
+    for (var i = 0; i < checkboxes.length; i++) {
+      //@ts-ignore
+      checkboxes[i].checked = value;
+      // console.log(checkboxes[i].id, result);
+      value
+        ? result.push(parseInt(checkboxes[i].id))
+        : (result = result.filter((e) => e !== parseInt(checkboxes[i].id)));
+    }
+
+    setSelected(result);
+  };
+
   const widthArray = ['w-xs', 'w-sm', 'w-lg'];
 
   return (
@@ -187,10 +201,10 @@ export const Grid: React.FC<gridProps> = ({
           <If condition={onSelect !== undefined}>
             <Then>
               <input
-                className="invisible w-[15px] accent-dustyBlue"
+                className="w-[15px] accent-dustyBlue"
                 type="checkbox"
-                defaultChecked={checked}
-                onChange={() => setChecked(!checked)}
+                checked={checked.includes(pageNumber)}
+                onChange={(e) => onSelectAllChange(e.target.checked)}
               />
             </Then>
           </If>
@@ -256,8 +270,10 @@ export const Grid: React.FC<gridProps> = ({
                     <If condition={onSelect !== undefined}>
                       <Then>
                         <input
+                          id={d.id}
                           type="checkbox"
-                          defaultChecked={checked}
+                          name="selectElement"
+                          checked={selected.includes(d.id)}
                           onChange={(e) => onRowSelection(e.target.checked, d.id)}
                           className="w-[15px] accent-dustyBlue"
                         />
