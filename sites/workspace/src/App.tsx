@@ -14,12 +14,13 @@ const columns = [
 ];
 
 const App: React.FC = () => {
-  const [data, setData] = React.useState<{
-    products: [];
-    total: number;
-    skip: number;
-    limit: number;
-  }>();
+  const [data, setData] =
+    React.useState<{
+      products: [];
+      total: number;
+      skip: number;
+      limit: number;
+    }>();
   const [loading, setLoading] = React.useState(false);
   const [pageNumber, setPageNumber] = React.useState(1);
   const [pageNumber2, setPageNumber2] = React.useState(1);
@@ -65,21 +66,21 @@ const App: React.FC = () => {
       </div>
 
       {/* Frontend pagination */}
-      <div style={{ marginBottom: "100px" }}>
+      {/* <div style={{ marginBottom: "100px" }}>
         <Grid
           data={products.products}
           onView={onView}
           onEdit={onEdit}
           onDelete={onDelete}
           resource="user"
-          loading={loading}
           columns={columns}
           pageSize={10}
+          onSelect={(ids: any) => alert(ids)}
           // totalRecords={30}
           pageNumber={pageNumber2}
           setPageNumber={setPageNumber2}
         />
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -19,9 +19,9 @@ export const ArrowDown: React.FC<myProps> = ({ onClick, className }) => {
       <path
         d="M19 14L12 21M12 21L5 14M12 21V3"
         stroke="#406882"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
