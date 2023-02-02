@@ -5,6 +5,8 @@ The Grid also offers support for features such as sorting, filtering, paging. Th
 
 PS this package is under development, please contact me for additional features
 
+![Screenshot](https://raw.githubusercontent.com/YazanKhatib/react-grid/development/packages/grid/screenshot.png)
+
 ## Setup
 
 To install the Grid and its dependent packages, use the following command.
