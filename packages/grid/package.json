@@ -11,8 +11,7 @@
     "Typescript"
   ],
   "files": [
-    "dist",
-    "screenshot.png"
+    "dist"
   ],
   "exports": {
     ".": {

@@ -1,8 +1,7 @@
 export interface gridProps {
   data: any;
+  height?: string;
   columns: { field: string; header: string; width: string }[];
-  resource: string;
-  select?: boolean;
   loading?: boolean;
   pageNumber?: number;
   pageSize?: number;
