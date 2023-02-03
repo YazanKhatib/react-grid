@@ -83,18 +83,19 @@ const App: React.FC = () => {
 
 ## Props
 
-| Name            | Type                                               | Description                                                     |
-| --------------- | -------------------------------------------------- | --------------------------------------------------------------- |
-| `data`          | any                                                | Data source                                                     |
-| `columns`       | { field: string; header: string; width: string }[] | Columns shape                                                   |
-| `loading`       | boolean                                            | defaultValue: false                                             |
-| `pageNumber`    | number                                             | DefaultValue: 1                                                 |
-| `totalRecords`  | number                                             | Used only with frontend pagination. DefaultValue: data.length() |
-| `onView`        | (id: string) => void                               |                                                                 |
-| `onEdit`        | (id: string) => void                               |                                                                 |
-| `onDelete`      | (id: string) => void                               |                                                                 |
-| `onSelect`      | (ids: string[]) => void                            | Perform action on selected records                              |
-| `setPageNumber` | React.Dispatch<React.SetStateAction<number>>       | Pagination                                                      |
+| Name            | Type                                               | Description                         |
+| --------------- | -------------------------------------------------- | ----------------------------------- |
+| `data`          | any                                                | Data source                         |
+| `columns`       | { field: string; header: string; width: string }[] | Columns shape                       |
+| `height`        | string                                             | Set the grid height                 |
+| `loading`       | boolean                                            | defaultValue: false                 |
+| `pageNumber`    | number                                             | DefaultValue: 1                     |
+| `totalRecords`  | number                                             | Used only with frontend pagination. |
+| `onView`        | (id: string) => void                               |                                     |
+| `onEdit`        | (id: string) => void                               |                                     |
+| `onDelete`      | (id: string) => void                               |                                     |
+| `onSelect`      | (ids: string[]) => void                            | Perform action on selected records  |
+| `setPageNumber` | React.Dispatch<React.SetStateAction<number>>       | Pagination                          |
 
 ## Contact
 

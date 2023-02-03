@@ -10,6 +10,7 @@ import '../index.css';
 
 export const Grid: React.FC<gridProps> = ({
   data,
+  height,
   columns,
   loading = false,
   pageSize = 10,
@@ -114,33 +115,25 @@ export const Grid: React.FC<gridProps> = ({
   }, [sorted, pageNumber, data]);
 
   /*
-   * Search and Pagination
+   * Search
    */
   React.useEffect(() => {
     const searchFunc = async () => {
       var results = [];
 
-      //* Search functionality
       if (searchValue) {
-        for (var i = 0; i < data?.length; i++) {
-          for (var key in data[i]) {
-            if (typeof get(data[i], key) !== 'string') continue;
+        results = data.filter((item: any) =>
+          Object.values(item).some(
+            (val) => String(val).toLowerCase().indexOf(searchValue.toString().toLowerCase()) !== -1
+          )
+        );
 
-            if (get(data[i], key).toLowerCase().indexOf(searchValue.toLowerCase()) !== -1) {
-              results.push(data[i]);
-              break;
-            }
-          }
-        }
         setRenderedData(results);
       } else {
         // Splitting data in frontend pagination
-
-        if (totalRecords === undefined) {
-          const start = (pageNumber - 1) * pageSize;
-          const paginatedResult = data?.slice(start, start + pageSize);
-          setRenderedData(paginatedResult);
-        }
+        const start = (pageNumber - 1) * pageSize;
+        const paginatedResult = data?.slice(start, start + pageSize);
+        setRenderedData(paginatedResult);
       }
     };
 
@@ -197,7 +190,6 @@ export const Grid: React.FC<gridProps> = ({
 
         {/* Grid header */}
         <div className={` flex justify-between bg-dustyGray px-8 py-3`}>
-          {/* //TODO: SelectAll functionality */}
           <If condition={onSelect !== undefined}>
             <Then>
               <input
@@ -250,73 +242,71 @@ export const Grid: React.FC<gridProps> = ({
           </If>
         </div>
 
-        {/* //TODO: add height property */}
         {/* Grid data */}
         <div className="py-4">
           <If condition={renderedData?.length}>
             <Then>
-              {loading && (
-                <div className="flex justify-center rounded-lg bg-white p-8">
-                  <ClipLoader color="#039FC8" size={80} />
-                </div>
-              )}
-
-              {!loading &&
-                renderedData?.map((d: any) => (
-                  <div
-                    key={d.id}
-                    className={`flex justify-between border-b-2 border-lightDustyGray px-8 py-3 last:border-b-0`}
-                  >
-                    <If condition={onSelect !== undefined}>
-                      <Then>
-                        <input
-                          id={d.id}
-                          type="checkbox"
-                          name="selectElement"
-                          checked={selected.includes(d.id)}
-                          onChange={(e) => onRowSelection(e.target.checked, d.id)}
-                          className="w-[15px] accent-dustyBlue"
-                        />
-                      </Then>
-                    </If>
-
-                    {columns.map(({ field, width }: any) => (
-                      <p key={field} className={` ${widthArray[parseInt(width)]} text-dustyBlue truncate`}>
-                        {get(d, field)}
-                      </p>
-                    ))}
-
-                    <If condition={onView !== undefined || onEdit !== undefined || onDelete !== undefined}>
-                      <Then>
-                        <div className="flex" style={{ width: '7%' }}>
-                          <If condition={onView !== undefined}>
-                            <Then>
-                              <button className="mr-2" onClick={() => onView!(d.id)}>
-                                <Eye color="light" />
-                              </button>
-                            </Then>
-                          </If>
-
-                          <If condition={onEdit !== undefined}>
-                            <Then>
-                              <button className="mr-2" onClick={() => onEdit!(d.id)}>
-                                <Pencil color="light" />
-                              </button>
-                            </Then>
-                          </If>
-
-                          <If condition={onDelete !== undefined}>
-                            <Then>
-                              <button onClick={() => onDelete!(d.id)}>
-                                <Trash color="light" />
-                              </button>
-                            </Then>
-                          </If>
-                        </div>
-                      </Then>
-                    </If>
+              <div className={`overflow-y-auto`} style={{ height: `${height}px` }}>
+                {loading && (
+                  <div className="flex justify-center rounded-lg bg-white p-8">
+                    <ClipLoader color="#039FC8" size={80} />
                   </div>
-                ))}
+                )}
+
+                {!loading &&
+                  renderedData?.map((d: any) => (
+                    <div key={d.id} className={`flex justify-between border-b-2 border-lightDustyGray px-8 py-3`}>
+                      <If condition={onSelect !== undefined}>
+                        <Then>
+                          <input
+                            id={d.id}
+                            type="checkbox"
+                            name="selectElement"
+                            checked={selected.includes(d.id)}
+                            onChange={(e) => onRowSelection(e.target.checked, d.id)}
+                            className="w-[15px] accent-dustyBlue"
+                          />
+                        </Then>
+                      </If>
+
+                      {columns.map(({ field, width }: any) => (
+                        <p key={field} className={` ${widthArray[parseInt(width)]} text-dustyBlue truncate`}>
+                          {get(d, field)}
+                        </p>
+                      ))}
+
+                      <If condition={onView !== undefined || onEdit !== undefined || onDelete !== undefined}>
+                        <Then>
+                          <div className="flex" style={{ width: '7%' }}>
+                            <If condition={onView !== undefined}>
+                              <Then>
+                                <button className="mr-2" onClick={() => onView!(d.id)}>
+                                  <Eye color="light" />
+                                </button>
+                              </Then>
+                            </If>
+
+                            <If condition={onEdit !== undefined}>
+                              <Then>
+                                <button className="mr-2" onClick={() => onEdit!(d.id)}>
+                                  <Pencil color="light" />
+                                </button>
+                              </Then>
+                            </If>
+
+                            <If condition={onDelete !== undefined}>
+                              <Then>
+                                <button onClick={() => onDelete!(d.id)}>
+                                  <Trash color="light" />
+                                </button>
+                              </Then>
+                            </If>
+                          </div>
+                        </Then>
+                      </If>
+                    </div>
+                  ))}
+              </div>
 
               <If condition={totalRecords ? pageSize < totalRecords : pageSize < data?.length}>
                 <Then>

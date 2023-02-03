@@ -6,6 +6,9 @@
     "baseUrl": "./src",
     "lib": ["dom", "esnext"],
     "importHelpers": true,
+    "paths": {
+      "tslib": ["node_modules/tslib/tslib.d.ts"]
+    },
     // output .d.ts declaration files for consumers
     "declaration": true,
     // output .js.map sourcemap files for consumers

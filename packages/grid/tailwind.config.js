@@ -3,9 +3,6 @@ module.exports = {
   content: ['./index.html', './src/**/*.{html,js,ts,tsx}'],
   theme: {
     extend: {
-      screens: {
-        sidebar: '300px',
-      },
       width: {
         xs: '5%',
         sm: '10%',
@@ -23,7 +20,6 @@ module.exports = {
         darkBlueBrownHover: '#393049',
       },
       fontFamily: {
-        arial: ['arial'],
         assistant: ['Assistant'],
       },
     },

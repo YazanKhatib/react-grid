@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid } from "yaa-grid";
 import "yaa-grid/dist/style.css";
-
+import { products } from "./data";
 const columns = [
   { field: "id", header: "ID", width: "1" },
   { field: "brand", header: "Brand", width: "1" },
@@ -53,7 +53,6 @@ const App: React.FC = () => {
           onView={onView}
           onEdit={onEdit}
           onDelete={onDelete}
-          resource="user"
           loading={loading}
           columns={columns}
           totalRecords={data?.total}
@@ -71,7 +70,6 @@ const App: React.FC = () => {
           onView={onView}
           onEdit={onEdit}
           onDelete={onDelete}
-          resource="user"
           columns={columns}
           pageSize={10}
           onSelect={(ids: any) => alert(ids)}
