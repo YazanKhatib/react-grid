@@ -1,7 +1,6 @@
 import React from "react";
 import { Grid } from "yaa-grid";
 import "yaa-grid/dist/style.css";
-import { products } from "./data";
 
 const columns = [
   { field: "id", header: "ID", width: "1" },
