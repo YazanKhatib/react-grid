@@ -2,7 +2,7 @@ import * as React from 'react';
 import ClipLoader from 'react-spinners/ClipLoader';
 import exportFromJSON from 'export-from-json';
 import { ceil, get } from 'lodash';
-import { Else, If, Then } from 'react-if';
+import { When, If, Then, Else } from 'react-if';
 import { gridProps } from '../types';
 import { Trash, Pencil, Download, Eye, Search, ArrowUp, ArrowDown } from '../icons';
 import PaginationComponent from './pagination';
@@ -16,6 +16,7 @@ export const Grid: React.FC<gridProps> = ({
   pageSize = 10,
   pageNumber = 1,
   totalRecords,
+  rtl = false,
   onView,
   onEdit,
   onDelete,
@@ -144,13 +145,12 @@ export const Grid: React.FC<gridProps> = ({
     const checkboxes = document.getElementsByName('selectElement');
 
     let result = selected;
-    console.log({ value });
     value ? setChecked([...checked, pageNumber]) : setChecked(checked.filter((e) => e !== pageNumber));
-    console.log({ first: result });
+
     for (var i = 0; i < checkboxes.length; i++) {
       //@ts-ignore
       checkboxes[i].checked = value;
-      // console.log(checkboxes[i].id, result);
+
       value
         ? result.push(parseInt(checkboxes[i].id))
         : (result = result.filter((e) => e !== parseInt(checkboxes[i].id)));
@@ -159,11 +159,10 @@ export const Grid: React.FC<gridProps> = ({
     setSelected(result);
   };
 
-  const widthArray = ['w-xs', 'w-sm', 'w-lg'];
-
   return (
     <>
-      <div className="overflow-hidden rounded-xl border border-dustyGray w-full">
+      {/* Grid */}
+      <div dir={`${rtl && 'rtl'}`} className="overflow-hidden rounded-xl border border-dustyGray w-full">
         {/* Grid toolbar */}
         <div className="flex justify-between py-2 px-8">
           <div
@@ -171,174 +170,169 @@ export const Grid: React.FC<gridProps> = ({
             onClick={() => exportFromJSON({ data, fileName, exportType })}
           >
             <Download color="light" />
-            <p className="text-dustyBlue ml-2">Excel export</p>
+            <p className="text-dustyBlue ml-2">{rtl ? 'تصدير اكسل' : 'Excel export'}</p>
           </div>
 
           <label className="relative block text-gray-400 focus-within:text-gray-600">
-            <div className="pointer-events-none absolute top-1/2 right-1 -translate-y-1/2 mt-[2px] transform">
+            <div
+              className={` ${
+                rtl ? 'left-1' : 'right-1'
+              } pointer-events-none absolute top-1/2 -translate-y-1/2 mt-[2px] transform`}
+            >
               <Search color="light" />
             </div>
 
             <input
               value={searchValue}
-              placeholder="Search"
+              placeholder={rtl ? 'البحث' : 'Search'}
               onChange={(e: any) => setSearchValue(e.target.value)}
               className="rounded-lg bg-dustyGray px-2 py-1 text-dustyBlue outline-none placeholder:text-dustyBlue"
             />
           </label>
         </div>
 
-        {/* Grid header */}
-        <div className={` flex justify-between bg-dustyGray px-8 py-3`}>
-          <If condition={onSelect !== undefined}>
-            <Then>
-              <input
-                className="w-[15px] accent-dustyBlue"
-                type="checkbox"
-                checked={checked.includes(pageNumber)}
-                onChange={(e) => onSelectAllChange(e.target.checked)}
-              />
-            </Then>
-          </If>
+        <div className="pb-4">
+          <div className="overflow-y-auto" style={{ height: `${height}px` }}>
+            {/* Grid header */}
+            <div className="min-w-[1000px] flex justify-between bg-dustyGray px-8 py-3">
+              <When condition={onSelect !== undefined}>
+                <input
+                  className="w-[15px] accent-dustyBlue"
+                  type="checkbox"
+                  checked={checked.includes(pageNumber)}
+                  onChange={(e) => onSelectAllChange(e.target.checked)}
+                />
+              </When>
 
-          {columns?.map(({ header, field, width }: any) => (
-            <p
-              key={header}
-              onClick={() =>
-                setSorted((prev) => {
-                  if (prev.column !== field) {
-                    return { column: field, status: 1 };
-                  } else if (prev.column === field && prev.status === 1) {
-                    return { ...prev, status: 2 };
+              {columns?.map(({ header, field, width }: any) => (
+                <p
+                  key={header}
+                  onClick={() =>
+                    setSorted((prev) => {
+                      if (prev.column !== field) {
+                        return { column: field, status: 1 };
+                      } else if (prev.column === field && prev.status === 1) {
+                        return { ...prev, status: 2 };
+                      }
+                      return { column: '', status: 0 };
+                    })
                   }
-                  return { column: '', status: 0 };
-                })
-              }
-              className={` ${widthArray[parseInt(width)]} text-dustyBlue cursor-pointer flex items-center`}
-            >
-              {header}
-              <span className="ml-4">
-                <If condition={sorted.column === field}>
-                  <Then>
-                    <If condition={sorted.status === 1}>
-                      <Then>
-                        <ArrowUp />
-                      </Then>
-                      <Else>
-                        <ArrowDown />
-                      </Else>
-                    </If>
-                  </Then>
-                </If>
-              </span>
-            </p>
-          ))}
-          <If condition={onView !== undefined || onEdit !== undefined || onDelete !== undefined}>
-            <Then>
-              <p className="text-dustyBlue" style={{ width: '7%' }}>
-                Actions
-              </p>
-            </Then>
-          </If>
-        </div>
-
-        {/* Grid data */}
-        <div className="py-4">
-          <If condition={renderedData?.length}>
-            <Then>
-              <div className={`overflow-y-auto`} style={{ height: `${height}px` }}>
-                {loading && (
-                  <div className="flex justify-center rounded-lg bg-white p-8">
-                    <ClipLoader color="#039FC8" size={80} />
-                  </div>
-                )}
-
-                {!loading &&
-                  renderedData?.map((d: any) => (
-                    <div key={d.id} className={`flex justify-between border-b-2 border-lightDustyGray px-8 py-3`}>
-                      <If condition={onSelect !== undefined}>
+                  className={`text-dustyBlue cursor-pointer flex items-center`}
+                  style={{ width: `${width}px` }}
+                >
+                  {header}
+                  <span className="ml-4">
+                    <When condition={sorted.column === field}>
+                      <If condition={sorted.status === 1}>
                         <Then>
-                          <input
-                            id={d.id}
-                            type="checkbox"
-                            name="selectElement"
-                            checked={selected.includes(d.id)}
-                            onChange={(e) => onRowSelection(e.target.checked, d.id)}
-                            className="w-[15px] accent-dustyBlue"
-                          />
+                          <ArrowUp />
                         </Then>
+
+                        <Else>
+                          <ArrowDown />
+                        </Else>
                       </If>
+                    </When>
+                  </span>
+                </p>
+              ))}
 
-                      {columns.map(({ field, width }: any) => (
-                        <p key={field} className={` ${widthArray[parseInt(width)]} text-dustyBlue truncate`}>
-                          {get(d, field)}
-                        </p>
-                      ))}
+              <When condition={onView !== undefined || onEdit !== undefined || onDelete !== undefined}>
+                <p className="text-dustyBlue flex items-center" style={{ width: '7%' }}>
+                  Actions
+                </p>
+              </When>
+            </div>
 
-                      <If condition={onView !== undefined || onEdit !== undefined || onDelete !== undefined}>
-                        <Then>
-                          <div className="flex" style={{ width: '7%' }}>
-                            <If condition={onView !== undefined}>
-                              <Then>
-                                <button className="mr-2" onClick={() => onView!(d.id)}>
-                                  <Eye color="light" />
-                                </button>
-                              </Then>
-                            </If>
-
-                            <If condition={onEdit !== undefined}>
-                              <Then>
-                                <button className="mr-2" onClick={() => onEdit!(d.id)}>
-                                  <Pencil color="light" />
-                                </button>
-                              </Then>
-                            </If>
-
-                            <If condition={onDelete !== undefined}>
-                              <Then>
-                                <button onClick={() => onDelete!(d.id)}>
-                                  <Trash color="light" />
-                                </button>
-                              </Then>
-                            </If>
-                          </div>
-                        </Then>
-                      </If>
-                    </div>
-                  ))}
+            {loading && (
+              <div className="flex justify-center rounded-lg bg-white p-8" style={{ height: `${height}px` }}>
+                <ClipLoader color="#039FC8" size={80} />
               </div>
+            )}
 
-              <If condition={totalRecords ? pageSize < totalRecords : pageSize < data?.length}>
-                <Then>
-                  <div className="mt-4 flex pl-4 justify-between items-center" style={{ width: '20%' }}>
-                    <PaginationComponent
-                      pageNumber={pageNumber}
-                      pages={totalRecords ? ceil(totalRecords / pageSize) : ceil(data?.length / pageSize)}
-                      paginate={paginate}
-                    />
+            {/* Grid body */}
+            <When condition={renderedData?.length}>
+              {!loading &&
+                renderedData?.map((d: any) => (
+                  <div
+                    key={d.id}
+                    className={`flex justify-between border-b-2 border-lightDustyGray px-8 py-3 min-w-[1000px] ${
+                      pageSize > data?.length ? 'last:border-b-0' : ''
+                    }`}
+                  >
+                    <If condition={onSelect !== undefined}>
+                      <Then>
+                        <input
+                          id={d.id}
+                          type="checkbox"
+                          name="selectElement"
+                          checked={selected.includes(d.id)}
+                          onChange={(e) => onRowSelection(e.target.checked, d.id)}
+                          className="w-[15px] accent-dustyBlue"
+                        />
+                      </Then>
+                    </If>
+
+                    {columns.map(({ field, width }: any) => (
+                      <p key={field} className="text-dustyBlue truncate" style={{ width: `${width}px` }}>
+                        {get(d, field)}
+                      </p>
+                    ))}
+
+                    <When condition={onView !== undefined || onEdit !== undefined || onDelete !== undefined}>
+                      <div className="flex" style={{ width: '7%' }}>
+                        <When condition={onView !== undefined}>
+                          <button className="me-2" onClick={() => onView!(d.id)}>
+                            <Eye color="light" />
+                          </button>
+                        </When>
+
+                        <When condition={onEdit !== undefined}>
+                          <button className="me-2" onClick={() => onEdit!(d.id)}>
+                            <Pencil color="light" />
+                          </button>
+                        </When>
+
+                        <When condition={onDelete !== undefined}>
+                          <button onClick={() => onDelete!(d.id)}>
+                            <Trash color="light" />
+                          </button>
+                        </When>
+                      </div>
+                    </When>
                   </div>
-                </Then>
-              </If>
-            </Then>
+                ))}
+            </When>
+          </div>
 
-            <Else>
-              <p className="flex justify-center font-assistant text-lg text-dustyBlue">No data to display</p>
-            </Else>
-          </If>
+          <When
+            condition={
+              !loading && renderedData?.length && totalRecords ? pageSize < totalRecords : pageSize < data?.length
+            }
+          >
+            <div dir="ltr" className="mt-4 flex ps-4 pe-4 justify-between items-center lg:w-1/5 w-2/5">
+              <PaginationComponent
+                pageNumber={pageNumber}
+                pages={totalRecords ? ceil(totalRecords / pageSize) : ceil(data?.length / pageSize)}
+                paginate={paginate}
+              />
+            </div>
+          </When>
+          <When condition={!renderedData?.length && !loading}>
+            <p className="flex justify-center font-assistant text-lg text-dustyBlue pt-8 pb-4">No data to display</p>
+          </When>
         </div>
       </div>
 
-      <If condition={onSelect !== undefined}>
-        <Then>
-          <button
-            type="submit"
-            onClick={() => onSelect!(selected)}
-            className="mt-4 rounded-lg bg-dustyBlue px-5 py-2.5 text-center font-medium text-white focus:outline-none focus:ring-4 focus:ring-blue-300 sm:w-auto"
-          >
-            Submit
-          </button>
-        </Then>
-      </If>
+      <When condition={onSelect !== undefined}>
+        <button
+          type="submit"
+          onClick={() => onSelect!(selected)}
+          className="mt-4 rounded-lg bg-dustyBlue px-5 py-2.5 text-center font-medium text-white focus:outline-none focus:ring-4 focus:ring-blue-300 sm:w-auto"
+        >
+          {rtl ? 'إدخال' : 'Submit'}
+        </button>
+      </When>
     </>
   );
 };

@@ -46,16 +46,16 @@ const App: React.FC = () => {
   }, [pageNumber]);
 
   /*
-   * Column width can be either 1 or 2
+   * Column width is measured by pixels
    */
   const columns = [
-    { field: 'id', header: 'ID', width: '1' },
-    { field: 'brand', header: 'Brand', width: '1' },
-    { field: 'category', header: 'Category', width: '1' },
-    { field: 'description', header: 'Description', width: '2' },
-    { field: 'price', header: 'Price', width: '1' },
-    { field: 'rating', header: 'Rating', width: '1' },
-    { field: 'title', header: 'Title', width: '1' },
+    { field: 'id', header: 'ID', width: '50' },
+    { field: 'brand', header: 'Brand', width: '100' },
+    { field: 'category', header: 'Category', width: '100' },
+    { field: 'description', header: 'Description', width: '200' },
+    { field: 'price', header: 'Price', width: '100' },
+    { field: 'rating', header: 'Rating', width: '100' },
+    { field: 'title', header: 'Title', width: '100' },
   ];
 
   const onView = (e: string) => alert(`View ${e}`);
@@ -86,8 +86,9 @@ const App: React.FC = () => {
 | `data`          | any                                                | Data source                         |
 | `columns`       | { field: string; header: string; width: string }[] | Columns shape                       |
 | `height`        | string                                             | Set the grid height                 |
+| `rtl`           | boolean                                            | defaultValue: "ltr", RTL support    |
 | `loading`       | boolean                                            | defaultValue: false                 |
-| `pageNumber`    | number                                             | DefaultValue: 1                     |
+| `pageNumber`    | number                                             | defaultValue: 1                     |
 | `totalRecords`  | number                                             | Used only with frontend pagination. |
 | `onView`        | (id: string) => void                               |                                     |
 | `onEdit`        | (id: string) => void                               |                                     |

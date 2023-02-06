@@ -6,6 +6,7 @@ export interface gridProps {
   pageNumber?: number;
   pageSize?: number;
   totalRecords?: number;
+  rtl?: boolean;
   onView?: (id: string) => void;
   onEdit?: (id: string) => void;
   onDelete?: (id: string) => void;
