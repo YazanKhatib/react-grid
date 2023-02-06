@@ -3,11 +3,6 @@ module.exports = {
   content: ['./index.html', './src/**/*.{html,js,ts,tsx}'],
   theme: {
     extend: {
-      width: {
-        xs: '5%',
-        sm: '10%',
-        lg: '20%',
-      },
       colors: {
         dustyLightBlue: '#B1D0E0',
         dustyBlue: '#406882',
@@ -24,5 +19,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require('tailwindcss-rtl')],
 };

@@ -58,6 +58,7 @@
     "react-dom": "^18.2.0",
     "storybook-builder-vite": "^0.1.23",
     "tailwindcss": "^3.2.4",
+    "tailwindcss-rtl": "^0.9.0",
     "tslib": "^2.4.1",
     "typescript": "^4.8.4",
     "vite-plugin-dts": "^1.7.1",
@@ -65,10 +66,13 @@
   },
   "dependencies": {
     "@vitejs/plugin-react": "^3.0.1",
+    "autoprefixer": "^10.4.13",
     "export-from-json": "^1.7.0",
+    "postcss": "^8.4.21",
     "react-if": "^4.1.4",
     "react-router-dom": "^6.4.3",
     "react-spinners": "^0.13.6",
+    "tailwindcss": "^3.2.4",
     "vite": "^4.0.4",
     "vite-plugin-linter": "^2.0.2"
   },
