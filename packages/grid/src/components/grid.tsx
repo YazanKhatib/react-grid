@@ -238,7 +238,7 @@ export const Grid: React.FC<gridProps> = ({
               ))}
 
               <When condition={onView !== undefined || onEdit !== undefined || onDelete !== undefined}>
-                <p className="text-dustyBlue" style={{ width: '7%' }}>
+                <p className="text-dustyBlue flex items-center" style={{ width: '7%' }}>
                   Actions
                 </p>
               </When>
@@ -256,7 +256,9 @@ export const Grid: React.FC<gridProps> = ({
                 renderedData?.map((d: any) => (
                   <div
                     key={d.id}
-                    className="flex justify-between border-b-2 border-lightDustyGray px-8 py-3 min-w-[1000px]"
+                    className={`flex justify-between border-b-2 border-lightDustyGray px-8 py-3 min-w-[1000px] ${
+                      pageSize > data?.length ? 'last:border-b-0' : ''
+                    }`}
                   >
                     <If condition={onSelect !== undefined}>
                       <Then>
