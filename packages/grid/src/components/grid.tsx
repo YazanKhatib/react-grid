@@ -1,7 +1,6 @@
 import * as React from 'react';
 import ClipLoader from 'react-spinners/ClipLoader';
 import exportFromJSON from 'export-from-json';
-import { When, If, Then, Else } from 'react-if';
 import { gridProps } from '../types';
 import { Trash, Pencil, Download, Eye, Search, ArrowUp, ArrowDown } from '../icons';
 import PaginationComponent from './pagination';
@@ -189,14 +188,14 @@ export const Grid: React.FC<gridProps> = ({
           <div className="overflow-y-auto" style={{ height: `${height}px` }}>
             {/* Grid header */}
             <div className="min-w-[1000px] flex justify-between bg-dustyGray px-8 py-3">
-              <When condition={onSelect !== undefined}>
+              {onSelect !== undefined && (
                 <input
                   className="w-[15px] accent-dustyBlue"
                   type="checkbox"
                   checked={checked.includes(pageNumber)}
                   onChange={(e) => onSelectAllChange(e.target.checked)}
                 />
-              </When>
+              )}
 
               {columns?.map(({ header, field, width }: any) => (
                 <p
@@ -216,26 +215,16 @@ export const Grid: React.FC<gridProps> = ({
                 >
                   {header}
                   <span className="ml-4">
-                    <When condition={sorted.column === field}>
-                      <If condition={sorted.status === 1}>
-                        <Then>
-                          <ArrowUp />
-                        </Then>
-
-                        <Else>
-                          <ArrowDown />
-                        </Else>
-                      </If>
-                    </When>
+                    {sorted.column === field ? sorted.status === 1 ? <ArrowUp /> : <ArrowDown /> : null}
                   </span>
                 </p>
               ))}
 
-              <When condition={onView !== undefined || onEdit !== undefined || onDelete !== undefined}>
+              {(onView !== undefined || onEdit !== undefined || onDelete !== undefined) && (
                 <p className="text-dustyBlue flex items-center" style={{ width: '7%' }}>
                   Actions
                 </p>
-              </When>
+              )}
             </div>
 
             {loading && (
@@ -245,65 +234,58 @@ export const Grid: React.FC<gridProps> = ({
             )}
 
             {/* Grid body */}
-            <When condition={renderedData?.length}>
-              {!loading &&
-                renderedData?.map((d: any) => (
-                  <div
-                    key={d.id}
-                    className={`flex justify-between border-b-2 border-lightDustyGray px-8 py-3 min-w-[1000px] ${
-                      pageSize > data?.length ? 'last:border-b-0' : ''
-                    }`}
-                  >
-                    <If condition={onSelect !== undefined}>
-                      <Then>
-                        <input
-                          id={d.id}
-                          type="checkbox"
-                          name="selectElement"
-                          checked={selected.includes(d.id)}
-                          onChange={(e) => onRowSelection(e.target.checked, d.id)}
-                          className="w-[15px] accent-dustyBlue"
-                        />
-                      </Then>
-                    </If>
+            {!loading &&
+              !!renderedData?.length &&
+              renderedData?.map((d: any) => (
+                <div
+                  key={d.id}
+                  className={`flex justify-between border-b-2 border-lightDustyGray px-8 py-3 min-w-[1000px] ${
+                    pageSize > data?.length ? 'last:border-b-0' : ''
+                  }`}
+                >
+                  {onSelect !== undefined && (
+                    <input
+                      id={d.id}
+                      type="checkbox"
+                      name="selectElement"
+                      checked={selected.includes(d.id)}
+                      onChange={(e) => onRowSelection(e.target.checked, d.id)}
+                      className="w-[15px] accent-dustyBlue"
+                    />
+                  )}
 
-                    {columns.map(({ field, width }: any) => (
-                      <p key={field} className="text-dustyBlue truncate" style={{ width: `${width}px` }}>
-                        {d[field]}
-                      </p>
-                    ))}
+                  {columns.map(({ field, width }: any) => (
+                    <p key={field} className="text-dustyBlue truncate" style={{ width: `${width}px` }}>
+                      {d[field]}
+                    </p>
+                  ))}
 
-                    <When condition={onView !== undefined || onEdit !== undefined || onDelete !== undefined}>
-                      <div className="flex" style={{ width: '7%' }}>
-                        <When condition={onView !== undefined}>
-                          <button className="me-2" onClick={() => onView!(d.id)}>
-                            <Eye color="light" />
-                          </button>
-                        </When>
+                  {(onView !== undefined || onEdit !== undefined || onDelete !== undefined) && (
+                    <div className="flex" style={{ width: '7%' }}>
+                      {onView !== undefined && (
+                        <button className="me-2" onClick={() => onView!(d.id)}>
+                          <Eye color="light" />
+                        </button>
+                      )}
 
-                        <When condition={onEdit !== undefined}>
-                          <button className="me-2" onClick={() => onEdit!(d.id)}>
-                            <Pencil color="light" />
-                          </button>
-                        </When>
+                      {onEdit !== undefined && (
+                        <button className="me-2" onClick={() => onEdit!(d.id)}>
+                          <Pencil color="light" />
+                        </button>
+                      )}
 
-                        <When condition={onDelete !== undefined}>
-                          <button onClick={() => onDelete!(d.id)}>
-                            <Trash color="light" />
-                          </button>
-                        </When>
-                      </div>
-                    </When>
-                  </div>
-                ))}
-            </When>
+                      {onDelete !== undefined && (
+                        <button onClick={() => onDelete!(d.id)}>
+                          <Trash color="light" />
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))}
           </div>
 
-          <When
-            condition={
-              !loading && renderedData?.length && totalRecords ? pageSize < totalRecords : pageSize < data?.length
-            }
-          >
+          {(!loading && renderedData?.length && totalRecords ? pageSize < totalRecords : pageSize < data?.length) && (
             <div dir="ltr" className="mt-4 flex ps-4 pe-4 justify-between items-center lg:w-1/5 w-2/5">
               <PaginationComponent
                 pageNumber={pageNumber}
@@ -311,14 +293,15 @@ export const Grid: React.FC<gridProps> = ({
                 paginate={paginate}
               />
             </div>
-          </When>
-          <When condition={!renderedData?.length && !loading}>
+          )}
+
+          {!renderedData?.length && !loading && (
             <p className="flex justify-center font-assistant text-lg text-dustyBlue pt-8 pb-4">No data to display</p>
-          </When>
+          )}
         </div>
       </div>
 
-      <When condition={onSelect !== undefined}>
+      {onSelect !== undefined && (
         <button
           type="submit"
           onClick={() => onSelect!(selected)}
@@ -326,7 +309,7 @@ export const Grid: React.FC<gridProps> = ({
         >
           {rtl ? 'إدخال' : 'Submit'}
         </button>
-      </When>
+      )}
     </>
   );
 };
