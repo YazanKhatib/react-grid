@@ -14,7 +14,7 @@ const columns = [
 ];
 
 const arabicColumns = [
-  { field: "id", header: "الرقم التعريفي", width: "20" },
+  { field: "id", header: "الرقم التعريفي", width: "50" },
   { field: "brand", header: "العلامة التجارية", width: "100" },
   { field: "category", header: "الفئة", width: "100" },
   { field: "description", header: "الوصف", width: "300" },
@@ -52,9 +52,9 @@ const App: React.FC = () => {
     fetchData();
   }, [pageNumber]);
 
-  const onView = (e: string) => alert(`View ${e}`);
-  const onEdit = (e: string) => alert(`edit ${e}`);
-  const onDelete = (e: string) => alert(`delete ${e}`);
+  const onView = (e: any) => alert(`View ${JSON.stringify(e)}`);
+  const onEdit = (e: any) => alert(`edit ${e}`);
+  const onDelete = (e: any) => alert(`delete ${e}`);
 
   return (
     <div style={{ width: "80%", margin: "auto", marginTop: "50px" }}>
