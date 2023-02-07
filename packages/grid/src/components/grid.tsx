@@ -1,7 +1,6 @@
 import * as React from 'react';
 import ClipLoader from 'react-spinners/ClipLoader';
 import exportFromJSON from 'export-from-json';
-import { ceil, get } from 'lodash';
 import { When, If, Then, Else } from 'react-if';
 import { gridProps } from '../types';
 import { Trash, Pencil, Download, Eye, Search, ArrowUp, ArrowDown } from '../icons';
@@ -67,11 +66,11 @@ export const Grid: React.FC<gridProps> = ({
       case 'first':
         return setPageNumber!(1);
       case 'next':
-        return pageNumber! + 1 <= ceil(totalRecords! / pageSize) && setPageNumber!(pageNumber! + 1);
+        return pageNumber! + 1 <= Math.ceil(totalRecords! / pageSize) && setPageNumber!(pageNumber! + 1);
       case 'previous':
         return pageNumber! > 1 && setPageNumber!(pageNumber! - 1);
       case 'last':
-        return totalRecords! > pageSize && setPageNumber!(ceil(totalRecords! / pageSize));
+        return totalRecords! > pageSize && setPageNumber!(Math.ceil(totalRecords! / pageSize));
     }
   };
 
@@ -84,15 +83,10 @@ export const Grid: React.FC<gridProps> = ({
       let reversedCondition = false;
 
       const result = [...data].sort((a: any, b: any) => {
-        condition =
-          sorted.status === 1
-            ? get(a, sorted.column) > get(b, sorted.column)
-            : get(a, sorted.column) < get(b, sorted.column);
+        condition = sorted.status === 1 ? a[sorted.column] > b[sorted.column] : a[sorted.column] < b[sorted.column];
 
         reversedCondition =
-          sorted.status === 1
-            ? get(a, sorted.column) < get(b, sorted.column)
-            : get(a, sorted.column) > get(b, sorted.column);
+          sorted.status === 1 ? a[sorted.column] < b[sorted.column] : a[sorted.column] > b[sorted.column];
 
         return condition ? 1 : reversedCondition ? -1 : 0;
       });
@@ -275,7 +269,7 @@ export const Grid: React.FC<gridProps> = ({
 
                     {columns.map(({ field, width }: any) => (
                       <p key={field} className="text-dustyBlue truncate" style={{ width: `${width}px` }}>
-                        {get(d, field)}
+                        {d[field]}
                       </p>
                     ))}
 
@@ -313,7 +307,7 @@ export const Grid: React.FC<gridProps> = ({
             <div dir="ltr" className="mt-4 flex ps-4 pe-4 justify-between items-center lg:w-1/5 w-2/5">
               <PaginationComponent
                 pageNumber={pageNumber}
-                pages={totalRecords ? ceil(totalRecords / pageSize) : ceil(data?.length / pageSize)}
+                pages={totalRecords ? Math.ceil(totalRecords / pageSize) : Math.ceil(data?.length / pageSize)}
                 paginate={paginate}
               />
             </div>
