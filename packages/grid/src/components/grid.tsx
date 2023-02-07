@@ -263,19 +263,19 @@ export const Grid: React.FC<gridProps> = ({
                   {(onView !== undefined || onEdit !== undefined || onDelete !== undefined) && (
                     <div className="flex" style={{ width: '7%' }}>
                       {onView !== undefined && (
-                        <button className="me-2" onClick={() => onView!(d.id)}>
+                        <button className="me-2" onClick={() => onView!(d)}>
                           <Eye color="light" />
                         </button>
                       )}
 
                       {onEdit !== undefined && (
-                        <button className="me-2" onClick={() => onEdit!(d.id)}>
+                        <button className="me-2" onClick={() => onEdit!(d)}>
                           <Pencil color="light" />
                         </button>
                       )}
 
                       {onDelete !== undefined && (
-                        <button onClick={() => onDelete!(d.id)}>
+                        <button onClick={() => onDelete!(d)}>
                           <Trash color="light" />
                         </button>
                       )}
