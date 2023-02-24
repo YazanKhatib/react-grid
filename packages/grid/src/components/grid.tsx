@@ -5,6 +5,7 @@ import { gridProps } from '../types';
 import { Trash, Pencil, Download, Eye, Search, ArrowUp, ArrowDown } from '../icons';
 import PaginationComponent from './pagination';
 import '../index.css';
+import { getProp } from './helpers';
 
 export const Grid: React.FC<gridProps> = ({
   data,
@@ -82,10 +83,15 @@ export const Grid: React.FC<gridProps> = ({
       let reversedCondition = false;
 
       const result = [...data].sort((a: any, b: any) => {
-        condition = sorted.status === 1 ? a[sorted.column] > b[sorted.column] : a[sorted.column] < b[sorted.column];
+        condition =
+          sorted.status === 1
+            ? getProp(a, sorted.column) > getProp(b, sorted.column)
+            : getProp(a, sorted.column) < getProp(b, sorted.column);
 
         reversedCondition =
-          sorted.status === 1 ? a[sorted.column] < b[sorted.column] : a[sorted.column] > b[sorted.column];
+          sorted.status === 1
+            ? getProp(a, sorted.column) < getProp(b, sorted.column)
+            : getProp(a, sorted.column) > getProp(b, sorted.column);
 
         return condition ? 1 : reversedCondition ? -1 : 0;
       });
@@ -256,7 +262,7 @@ export const Grid: React.FC<gridProps> = ({
 
                   {columns.map(({ field, width }: any) => (
                     <p key={field} className="text-dustyBlue truncate" style={{ width: `${width}px` }}>
-                      {d[field]}
+                      {getProp(d, field)}
                     </p>
                   ))}
 
