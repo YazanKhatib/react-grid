@@ -74,7 +74,8 @@ const App: React.FC = () => {
       {/* Backend pagination */}
       <div style={{ marginBottom: "100px" }}>
         <Grid
-          // height={700}
+          height="700"
+          // color="black"
           rtl={rtl}
           data={rtl ? arabicProducts : data?.products}
           onView={onView}

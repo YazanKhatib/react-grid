@@ -7,14 +7,7 @@ interface myProps {
 
 export const Pencil: React.FC<myProps> = ({ color, onClick }) => {
   return (
-    <svg
-      onClick={onClick}
-      width="20"
-      height="20"
-      viewBox="0 0 21 21"
-      fill={color === 'light' ? '#406882' : '#ECEDF3'}
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg onClick={onClick} width="20" height="20" viewBox="0 0 21 21" fill={color} xmlns="http://www.w3.org/2000/svg">
       <path d="M17.414 2.586C17.0389 2.21106 16.5303 2.00043 16 2.00043C15.4697 2.00043 14.9611 2.21106 14.586 2.586L7 10.172V13H9.828L17.414 5.414C17.7889 5.03894 17.9996 4.53033 17.9996 4C17.9996 3.46967 17.7889 2.96106 17.414 2.586Z" />
       <path
         fillRule="evenodd"
