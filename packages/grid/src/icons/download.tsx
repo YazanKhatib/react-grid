@@ -7,14 +7,7 @@ interface myProps {
 
 export const Download: React.FC<myProps> = ({ color, onClick }) => {
   return (
-    <svg
-      onClick={onClick}
-      width="28"
-      height="28"
-      viewBox="0 0 21 21"
-      fill={color === 'light' ? '#406882' : '#ECEDF3'}
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg onClick={onClick} width="28" height="28" viewBox="0 0 21 21" fill={color} xmlns="http://www.w3.org/2000/svg">
       <path
         fillRule="evenodd"
         clipRule="evenodd"

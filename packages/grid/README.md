@@ -84,6 +84,7 @@ const App: React.FC = () => {
 | Name            | Type                                               | Description                         |
 | --------------- | -------------------------------------------------- | ----------------------------------- |
 | `data`          | any                                                | Data source                         |
+| `color`         | string                                             | e.g. "red" or "#406882"             |
 | `columns`       | { field: string; header: string; width: string }[] | Columns shape                       |
 | `height`        | string                                             | Set the grid height                 |
 | `rtl`           | boolean                                            | defaultValue: "ltr", RTL support    |

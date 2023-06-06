@@ -9,6 +9,7 @@ import { getProp } from './helpers';
 
 export const Grid: React.FC<gridProps> = ({
   data,
+  color = '#406882',
   height,
   columns,
   loading = false,
@@ -161,45 +162,57 @@ export const Grid: React.FC<gridProps> = ({
   return (
     <>
       {/* Grid */}
-      <div dir={`${rtl && 'rtl'}`} className="overflow-hidden rounded-xl border border-dustyGray w-full">
+      <div
+        dir={`${rtl && 'rtl'}`}
+        className="overflow-hidden rounded-xl border border-dustyGray w-full"
+        id="table-container"
+      >
         {/* Grid toolbar */}
-        <div className="flex justify-between py-2 px-8">
+        <div id="table-toolbar" className="flex justify-between py-2 px-8">
           <div
             className="flex cursor-pointer items-center"
             onClick={() => exportFromJSON({ data, fileName, exportType })}
+            id="export-button"
           >
-            <Download color="light" />
-            <p className="text-dustyBlue ml-2">{rtl ? 'تصدير اكسل' : 'Excel export'}</p>
+            <Download {...{ color }} />
+            <p style={{ color: color }} className="ml-2" id="export-text">
+              {rtl ? 'تصدير اكسل' : 'Excel export'}
+            </p>
           </div>
 
-          <label className="relative block text-gray-400 focus-within:text-gray-600">
+          <label className="relative block text-gray-400 focus-within:text-gray-600" id="search-label">
             <div
               className={` ${
                 rtl ? 'left-1' : 'right-1'
               } pointer-events-none absolute top-1/2 -translate-y-1/2 mt-[2px] transform`}
+              id="search-icon-container"
             >
-              <Search color="light" />
+              <Search {...{ color }} />
             </div>
 
             <input
               value={searchValue}
               placeholder={rtl ? 'البحث' : 'Search'}
               onChange={(e: any) => setSearchValue(e.target.value)}
-              className="rounded-lg bg-dustyGray px-2 py-1 text-dustyBlue outline-none placeholder:text-dustyBlue"
+              style={{ color: color }}
+              className="rounded-lg bg-dustyGray px-2 py-1 outline-none"
+              id="search-input"
             />
           </label>
         </div>
 
         <div className="pb-4">
           <div className="overflow-y-auto" style={{ height: `${height}px` }}>
-            {/* Grid header */}
-            <div className="min-w-[1000px] flex justify-between bg-dustyGray px-8 py-3">
+            {/* Table header */}
+            <div className="min-w-[1000px] flex justify-between bg-dustyGray px-8 py-3" id="table-header">
               {onSelect !== undefined && (
                 <input
-                  className="w-[15px] accent-dustyBlue"
                   type="checkbox"
+                  style={{ color: color }}
+                  className="w-[15px] accent-dustyBlue"
                   checked={checked.includes(pageNumber)}
                   onChange={(e) => onSelectAllChange(e.target.checked)}
+                  id="select-all-checkbox"
                 />
               )}
 
@@ -216,25 +229,32 @@ export const Grid: React.FC<gridProps> = ({
                       return { column: '', status: 0 };
                     })
                   }
-                  className={`text-dustyBlue cursor-pointer flex items-center`}
-                  style={{ width: `${width}px` }}
+                  className={`cursor-pointer flex items-center`}
+                  style={{ width: `${width}px`, color: color }}
+                  id="column"
                 >
                   {header}
                   <span className="ml-4">
-                    {sorted.column === field ? sorted.status === 1 ? <ArrowUp /> : <ArrowDown /> : null}
+                    {sorted.column === field ? (
+                      sorted.status === 1 ? (
+                        <ArrowUp {...{ color }} />
+                      ) : (
+                        <ArrowDown {...{ color }} />
+                      )
+                    ) : null}
                   </span>
                 </p>
               ))}
 
               {(onView !== undefined || onEdit !== undefined || onDelete !== undefined) && (
-                <p className="text-dustyBlue flex items-center" style={{ width: '7%' }}>
+                <p className="flex items-center" style={{ width: '7%', color: color }} id="actions-header">
                   Actions
                 </p>
               )}
             </div>
 
             {loading && (
-              <div className="flex justify-center rounded-lg bg-white p-8" style={{ height: `${height}px` }}>
+              <div className="flex justify-center rounded-lg bg-white p-8" id="loading-spinner">
                 <ClipLoader color="#039FC8" size={80} />
               </div>
             )}
@@ -248,41 +268,42 @@ export const Grid: React.FC<gridProps> = ({
                   className={`flex justify-between border-b-2 border-lightDustyGray px-8 py-3 min-w-[1000px] ${
                     pageSize > data?.length ? 'last:border-b-0' : ''
                   }`}
+                  id="row"
                 >
                   {onSelect !== undefined && (
                     <input
-                      id={d.id}
                       type="checkbox"
                       name="selectElement"
                       checked={selected.includes(d.id)}
                       onChange={(e) => onRowSelection(e.target.checked, d.id)}
                       className="w-[15px] accent-dustyBlue"
+                      id="select-checkbox"
                     />
                   )}
 
                   {columns.map(({ field, width }: any) => (
-                    <p key={field} className="text-dustyBlue truncate" style={{ width: `${width}px` }}>
+                    <p key={field} className="truncate" style={{ width: `${width}px`, color: color }} id="field">
                       {getProp(d, field)}
                     </p>
                   ))}
 
                   {(onView !== undefined || onEdit !== undefined || onDelete !== undefined) && (
-                    <div className="flex" style={{ width: '7%' }}>
+                    <div className="flex" style={{ width: '7%' }} id="actions-row">
                       {onView !== undefined && (
-                        <button className="me-2" onClick={() => onView!(d)}>
-                          <Eye color="light" />
+                        <button className="me-2" onClick={() => onView!(d)} id="view-button">
+                          <Eye {...{ color }} />
                         </button>
                       )}
 
                       {onEdit !== undefined && (
-                        <button className="me-2" onClick={() => onEdit!(d)}>
-                          <Pencil color="light" />
+                        <button className="me-2" onClick={() => onEdit!(d)} id="edit-button">
+                          <Pencil {...{ color }} />
                         </button>
                       )}
 
                       {onDelete !== undefined && (
-                        <button onClick={() => onDelete!(d)}>
-                          <Trash color="light" />
+                        <button onClick={() => onDelete!(d)} id="delete-button">
+                          <Trash {...{ color }} />
                         </button>
                       )}
                     </div>
@@ -292,17 +313,22 @@ export const Grid: React.FC<gridProps> = ({
           </div>
 
           {(!loading && renderedData?.length && totalRecords ? pageSize < totalRecords : pageSize < data?.length) && (
-            <div dir="ltr" className="mt-4 flex ps-4 pe-4 justify-between items-center lg:w-1/5 w-2/5">
+            <div
+              dir="ltr"
+              className="mt-4 flex ps-4 pe-4 justify-between items-center lg:w-1/5 w-2/5"
+              id="pagination-container"
+            >
               <PaginationComponent
-                pageNumber={pageNumber}
+                {...{ paginate, pageNumber, color }}
                 pages={totalRecords ? Math.ceil(totalRecords / pageSize) : Math.ceil(data?.length / pageSize)}
-                paginate={paginate}
               />
             </div>
           )}
 
           {!renderedData?.length && !loading && (
-            <p className="flex justify-center font-assistant text-lg text-dustyBlue pt-8 pb-4">No data to display</p>
+            <p className="flex justify-center font-assistant text-lg text-dustyBlue pt-8 pb-4" id="no-data-message">
+              No data to display
+            </p>
           )}
         </div>
       </div>
@@ -311,7 +337,9 @@ export const Grid: React.FC<gridProps> = ({
         <button
           type="submit"
           onClick={() => onSelect!(selected)}
-          className="mt-4 rounded-lg bg-dustyBlue px-5 py-2.5 text-center font-medium text-white focus:outline-none focus:ring-4 focus:ring-blue-300 sm:w-auto"
+          style={{ backgroundColor: color }}
+          className="mt-4 rounded-lg px-5 py-2.5 text-center font-medium text-white focus:outline-none focus:ring-4 focus:ring-blue-300 sm:w-auto"
+          id="submit-button"
         >
           {rtl ? 'إدخال' : 'Submit'}
         </button>

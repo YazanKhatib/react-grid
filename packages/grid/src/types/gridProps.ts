@@ -1,5 +1,6 @@
 export interface gridProps {
   data: any;
+  color?: string;
   height?: string;
   columns: { field: string; header: string; width: string }[];
   loading?: boolean;
