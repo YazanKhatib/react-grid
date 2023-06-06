@@ -12,8 +12,8 @@ export default defineConfig({
   ],
   build: {
     lib: {
-      entry: path.resolve(__dirname, 'src/components/index.ts'),
-      name: 'MyLib',
+      entry: path.resolve(__dirname, 'src/index.ts'),
+      name: 'yaa-grid',
       formats: ['es', 'umd'],
       fileName: (format) => `yaa-grid.${format}.js`,
     },

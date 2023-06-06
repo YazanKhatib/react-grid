@@ -1,13 +1,13 @@
 import * as React from 'react';
-import ClipLoader from 'react-spinners/ClipLoader';
 import exportFromJSON from 'export-from-json';
+import ClipLoader from 'react-spinners/ClipLoader';
+import { getProp } from './helpers';
 import { gridProps } from '../types';
 import { Trash, Pencil, Download, Eye, Search, ArrowUp, ArrowDown } from '../icons';
 import PaginationComponent from './pagination';
 import '../index.css';
-import { getProp } from './helpers';
 
-export const Grid: React.FC<gridProps> = ({
+const Grid: React.FC<gridProps> = ({
   data,
   color = '#406882',
   height,
@@ -347,3 +347,5 @@ export const Grid: React.FC<gridProps> = ({
     </>
   );
 };
+
+export default Grid;
