@@ -277,7 +277,7 @@ const Grid: React.FC<gridProps> = ({
                       checked={selected.includes(d.id)}
                       onChange={(e) => onRowSelection(e.target.checked, d.id)}
                       className="w-[15px] accent-dustyBlue"
-                      id="select-checkbox"
+                      id={d.id}
                     />
                   )}
 
@@ -286,7 +286,6 @@ const Grid: React.FC<gridProps> = ({
                       {getProp(d, field)}
                     </p>
                   ))}
-
                   {(onView !== undefined || onEdit !== undefined || onDelete !== undefined) && (
                     <div className="flex" style={{ width: '7%' }} id="actions-row">
                       {onView !== undefined && (
