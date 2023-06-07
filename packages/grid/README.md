@@ -5,6 +5,10 @@ The Grid also offers support for features such as sorting, filtering, paging. Th
 
 PS this package is under development, please contact me for additional features
 
+<p align="center">
+  <a href="https://demo-repo-eosin.vercel.app/">Online demo</a>
+</p>
+
 ![Screenshot](https://raw.githubusercontent.com/YazanKhatib/react-grid/development/packages/grid/Screenshot.png)
 
 ## Setup
