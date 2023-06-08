@@ -5,7 +5,20 @@ The Grid also offers support for features such as sorting, filtering, paging. Th
 
 PS this package is under development, please contact me for additional features
 
+<p align="center">
+  <a href="https://demo-repo-eosin.vercel.app/">Online demo</a>
+</p>
+
 ![Screenshot](https://raw.githubusercontent.com/YazanKhatib/react-grid/development/packages/grid/Screenshot.png)
+
+## Changelog
+
+- Theme color customization by passing color prop e.g. color="red", color="#406882"
+- Images support are now added you just need to specify its type as below
+
+  ```js
+  { field: 'thumbnail', header: 'Thumbnail', type: 'img', width: '100' },
+  ```
 
 ## Setup
 
@@ -56,6 +69,7 @@ const App: React.FC = () => {
     { field: 'price', header: 'Price', width: '100' },
     { field: 'rating', header: 'Rating', width: '100' },
     { field: 'title', header: 'Title', width: '100' },
+    { field: 'thumbnail', header: 'Thumbnail', type: 'img', width: '100' },
   ];
 
   const onView = (e: string) => alert(`View ${e}`);

@@ -1,13 +1,13 @@
 import * as React from 'react';
-import ClipLoader from 'react-spinners/ClipLoader';
 import exportFromJSON from 'export-from-json';
+import ClipLoader from 'react-spinners/ClipLoader';
+import { getProp } from './helpers';
 import { gridProps } from '../types';
 import { Trash, Pencil, Download, Eye, Search, ArrowUp, ArrowDown } from '../icons';
 import PaginationComponent from './pagination';
 import '../index.css';
-import { getProp } from './helpers';
 
-export const Grid: React.FC<gridProps> = ({
+const Grid: React.FC<gridProps> = ({
   data,
   color = '#406882',
   height,
@@ -265,7 +265,7 @@ export const Grid: React.FC<gridProps> = ({
               renderedData?.map((d: any) => (
                 <div
                   key={d.id}
-                  className={`flex justify-between border-b-2 border-lightDustyGray px-8 py-3 min-w-[1000px] ${
+                  className={`flex justify-between items-center border-b-2 border-lightDustyGray px-8 py-3 min-w-[1000px] ${
                     pageSize > data?.length ? 'last:border-b-0' : ''
                   }`}
                   id="row"
@@ -277,16 +277,15 @@ export const Grid: React.FC<gridProps> = ({
                       checked={selected.includes(d.id)}
                       onChange={(e) => onRowSelection(e.target.checked, d.id)}
                       className="w-[15px] accent-dustyBlue"
-                      id="select-checkbox"
+                      id={d.id}
                     />
                   )}
 
-                  {columns.map(({ field, width }: any) => (
+                  {columns.map(({ field, width, type }: any) => (
                     <p key={field} className="truncate" style={{ width: `${width}px`, color: color }} id="field">
-                      {getProp(d, field)}
+                      {type === 'img' ? <img src={getProp(d, field)} alt={field} /> : getProp(d, field)}
                     </p>
                   ))}
-
                   {(onView !== undefined || onEdit !== undefined || onDelete !== undefined) && (
                     <div className="flex" style={{ width: '7%' }} id="actions-row">
                       {onView !== undefined && (
@@ -347,3 +346,5 @@ export const Grid: React.FC<gridProps> = ({
     </>
   );
 };
+
+export default Grid;

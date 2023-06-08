@@ -6,7 +6,7 @@ export interface tabsProps {
   setActive: (x: number) => void;
 }
 
-export const Tabs: React.FC<tabsProps> = ({ tabs, active, setActive }) => {
+const Tabs: React.FC<tabsProps> = ({ tabs, active, setActive }) => {
   return (
     <>
       <div className="-mb-[1px]">
@@ -25,3 +25,5 @@ export const Tabs: React.FC<tabsProps> = ({ tabs, active, setActive }) => {
     </>
   );
 };
+
+export default Tabs;

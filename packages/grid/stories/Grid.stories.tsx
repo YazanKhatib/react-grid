@@ -1,8 +1,8 @@
 // stories/Grid.stories.tsx
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
-import { Grid } from '../src/components/grid';
 import { gridProps } from '../src/types';
+import Grid from '../src/components/grid';
 
 const meta: Meta = {
   title: 'Grid example',
@@ -61,7 +61,7 @@ const data = [
 ];
 
 export default meta;
-const Template: Story<gridProps> = args => {
+const Template: Story<gridProps> = (args) => {
   const [pageNumber, setPageNumber] = React.useState(1);
   return (
     <Grid {...args} pageNumber={pageNumber} setPageNumber={setPageNumber} onSelect={() => console.log('selected')} />
