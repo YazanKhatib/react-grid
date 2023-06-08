@@ -11,6 +11,7 @@ const columns = [
   { field: "price", header: "Price", width: "50" },
   { field: "rating", header: "Rating", width: "50" },
   { field: "title", header: "Phone number", width: "200" },
+  { field: "thumbnail", header: "Image", type: "img", width: "50" },
 ];
 
 const arabicColumns = [

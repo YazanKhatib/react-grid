@@ -265,7 +265,7 @@ const Grid: React.FC<gridProps> = ({
               renderedData?.map((d: any) => (
                 <div
                   key={d.id}
-                  className={`flex justify-between border-b-2 border-lightDustyGray px-8 py-3 min-w-[1000px] ${
+                  className={`flex justify-between items-center border-b-2 border-lightDustyGray px-8 py-3 min-w-[1000px] ${
                     pageSize > data?.length ? 'last:border-b-0' : ''
                   }`}
                   id="row"
@@ -281,9 +281,9 @@ const Grid: React.FC<gridProps> = ({
                     />
                   )}
 
-                  {columns.map(({ field, width }: any) => (
+                  {columns.map(({ field, width, type }: any) => (
                     <p key={field} className="truncate" style={{ width: `${width}px`, color: color }} id="field">
-                      {getProp(d, field)}
+                      {type === 'img' ? <img src={getProp(d, field)} alt={field} /> : getProp(d, field)}
                     </p>
                   ))}
                   {(onView !== undefined || onEdit !== undefined || onDelete !== undefined) && (

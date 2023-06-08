@@ -11,6 +11,15 @@ PS this package is under development, please contact me for additional features
 
 ![Screenshot](https://raw.githubusercontent.com/YazanKhatib/react-grid/development/packages/grid/Screenshot.png)
 
+## Changelog
+
+- Theme color customization by passing color prop e.g. color="red", color="#406882"
+- Images support are now added you just need to specify its type as below
+
+  ```js
+  { field: 'thumbnail', header: 'Thumbnail', type: 'img', width: '100' },
+  ```
+
 ## Setup
 
 To install the Grid and its dependent packages, use the following command.
@@ -60,6 +69,7 @@ const App: React.FC = () => {
     { field: 'price', header: 'Price', width: '100' },
     { field: 'rating', header: 'Rating', width: '100' },
     { field: 'title', header: 'Title', width: '100' },
+    { field: 'thumbnail', header: 'Thumbnail', type: 'img', width: '100' },
   ];
 
   const onView = (e: string) => alert(`View ${e}`);
