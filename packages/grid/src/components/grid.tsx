@@ -314,7 +314,7 @@ const Grid: React.FC<gridProps> = ({
           {(!loading && renderedData?.length && totalRecords ? pageSize < totalRecords : pageSize < data?.length) && (
             <div
               dir="ltr"
-              className="mt-4 flex ps-4 pe-4 justify-between items-center lg:w-1/5 w-2/5"
+              className="mt-4 flex ps-4 pe-4 justify-between items-center lg:w-1/5 md:w-2/5 w-full"
               id="pagination-container"
             >
               <PaginationComponent
