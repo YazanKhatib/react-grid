@@ -175,7 +175,7 @@ const Grid: React.FC<gridProps> = ({
             id="export-button"
           >
             <Download {...{ color }} />
-            <p style={{ color: color }} className="ml-2" id="export-text">
+            <p style={{ color: color }} className="ml-2 md:visible invisible" id="export-text">
               {rtl ? 'تصدير اكسل' : 'Excel export'}
             </p>
           </div>
@@ -209,7 +209,7 @@ const Grid: React.FC<gridProps> = ({
                 <input
                   type="checkbox"
                   style={{ color: color }}
-                  className="w-[15px] accent-dustyBlue"
+                  className="xl:mr-0 mr-4 w-[15px] accent-dustyBlue"
                   checked={checked.includes(pageNumber)}
                   onChange={(e) => onSelectAllChange(e.target.checked)}
                   id="select-all-checkbox"
@@ -276,7 +276,7 @@ const Grid: React.FC<gridProps> = ({
                       name="selectElement"
                       checked={selected.includes(d.id)}
                       onChange={(e) => onRowSelection(e.target.checked, d.id)}
-                      className="w-[15px] accent-dustyBlue"
+                      className="xl:mr-0 mr-4 w-[15px] accent-dustyBlue"
                       id={d.id}
                     />
                   )}
