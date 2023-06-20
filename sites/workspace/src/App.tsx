@@ -11,7 +11,7 @@ const columns = [
   { field: "price", header: "Price", width: "50" },
   { field: "rating", header: "Rating", width: "50" },
   { field: "title", header: "Phone number", width: "200" },
-  { field: "thumbnail", header: "Image", type: "img", width: "50" },
+  // { field: "thumbnail", header: "Image", type: "img", width: "50" },
 ];
 
 const arabicColumns = [
@@ -76,6 +76,7 @@ const App: React.FC = () => {
       <div style={{ marginBottom: "100px" }}>
         <Grid
           rtl={rtl}
+          variant="stripe"
           data={rtl ? arabicProducts : data?.products}
           onView={onView}
           onEdit={onEdit}
