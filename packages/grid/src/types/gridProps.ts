@@ -2,6 +2,7 @@ export interface gridProps {
   data: any;
   color?: string;
   height?: string;
+  variant?: string;
   columns: { field: string; header: string; width: string }[];
   loading?: boolean;
   pageNumber?: number;

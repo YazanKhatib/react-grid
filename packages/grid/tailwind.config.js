@@ -8,6 +8,9 @@ module.exports = {
         dustyGray: '#CDCED8',
         lightDustyGray: '#ECEDF3',
       },
+      backgroundColor: {
+        lightGray: '#F1F1F1',
+      },
       fontFamily: {
         assistant: ['Assistant'],
       },

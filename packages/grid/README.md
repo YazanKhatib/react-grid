@@ -15,6 +15,7 @@ PS this package is under development, please contact me for additional features
 
 - Theme color customization by passing color prop e.g. color="red", color="#406882"
 - Images support are now added you just need to specify its type as below
+- Striped table view
 
   ```js
   { field: 'thumbnail', header: 'Thumbnail', type: 'img', width: '100' },
@@ -100,6 +101,7 @@ const App: React.FC = () => {
 | `data`          | any                                                | Data source                         |
 | `color`         | string                                             | e.g. "red" or "#406882"             |
 | `columns`       | { field: string; header: string; width: string }[] | Columns shape                       |
+| `variant`       | string                                             | stripe                              |
 | `height`        | string                                             | Set the grid height                 |
 | `rtl`           | boolean                                            | defaultValue: "ltr", RTL support    |
 | `loading`       | boolean                                            | defaultValue: false                 |

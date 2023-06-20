@@ -11,6 +11,7 @@ const Grid: React.FC<gridProps> = ({
   data,
   color = '#406882',
   height,
+  variant = 'default',
   columns,
   loading = false,
   pageSize = 10,
@@ -168,7 +169,7 @@ const Grid: React.FC<gridProps> = ({
         id="table-container"
       >
         {/* Grid toolbar */}
-        <div id="table-toolbar" className="flex justify-between py-2 px-8">
+        <div id="table-toolbar" className={` ${variant == 'stripe' && 'border-b '} flex justify-between py-2 px-8`}>
           <div
             className="flex cursor-pointer items-center"
             onClick={() => exportFromJSON({ data, fileName, exportType })}
@@ -195,7 +196,7 @@ const Grid: React.FC<gridProps> = ({
               placeholder={rtl ? 'البحث' : 'Search'}
               onChange={(e: any) => setSearchValue(e.target.value)}
               style={{ color: color }}
-              className="rounded-lg bg-dustyGray px-2 py-1 outline-none"
+              className="rounded-lg bg-lightGray px-2 py-1 outline-none"
               id="search-input"
             />
           </label>
@@ -204,7 +205,12 @@ const Grid: React.FC<gridProps> = ({
         <div className="pb-4">
           <div className="overflow-y-auto" style={{ height: `${height}px` }}>
             {/* Table header */}
-            <div className="min-w-[1000px] flex justify-between bg-dustyGray px-8 py-3" id="table-header">
+            <div
+              className={` ${
+                variant == 'stripe' ? 'border-b' : 'bg-lightGray'
+              } min-w-[1000px] flex justify-between px-8 py-3`}
+              id="table-header"
+            >
               {onSelect !== undefined && (
                 <input
                   type="checkbox"
@@ -262,12 +268,13 @@ const Grid: React.FC<gridProps> = ({
             {/* Grid body */}
             {!loading &&
               !!renderedData?.length &&
-              renderedData?.map((d: any) => (
+              renderedData?.map((d: any, index: number) => (
                 <div
                   key={d.id}
-                  className={`flex justify-between items-center border-b-2 border-lightDustyGray px-8 py-3 min-w-[1000px] ${
-                    pageSize > data?.length ? 'last:border-b-0' : ''
-                  }`}
+                  className={`flex justify-between items-center px-8 py-3 min-w-[1000px] 
+                  ${pageSize > data?.length ? 'last:border-b-0' : ''} 
+                  ${variant === 'stripe' ? '' : 'border-b-2 border-lightDustyGray'} 
+                  ${variant === 'stripe' && index % 2 === 0 && 'bg-lightGray'} `}
                   id="row"
                 >
                   {onSelect !== undefined && (
