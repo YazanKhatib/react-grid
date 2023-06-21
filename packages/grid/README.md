@@ -9,7 +9,7 @@ PS this package is under development, please contact me for additional features
   <a href="https://demo-repo-eosin.vercel.app/">Online demo</a>
 </p>
 
-![Screenshot](https://raw.githubusercontent.com/YazanKhatib/react-grid/development/packages/grid/Screenshot.png)
+![Screenshot](https://raw.githubusercontent.com/YazanKhatib/react-grid/main/packages/grid/Screenshot.png)
 
 ## Changelog
 
