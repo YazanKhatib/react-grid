@@ -76,7 +76,9 @@ const App: React.FC = () => {
       <div style={{ marginBottom: "100px" }}>
         <Grid
           rtl={rtl}
-          variant="stripe"
+          // variant="stripe"
+          search={false}
+          jsonExport={false}
           data={rtl ? arabicProducts : data?.products}
           onView={onView}
           onEdit={onEdit}

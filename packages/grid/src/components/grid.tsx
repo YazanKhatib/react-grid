@@ -1,14 +1,16 @@
 import * as React from 'react';
-import exportFromJSON from 'export-from-json';
-import ClipLoader from 'react-spinners/ClipLoader';
 import { getProp } from './helpers';
 import { gridProps } from '../types';
-import { Trash, Pencil, Download, Eye, Search, ArrowUp, ArrowDown } from '../icons';
+import { Trash, Pencil, Eye, ArrowUp, ArrowDown } from '../icons';
+import GridToolbar from './gridToolbar';
 import PaginationComponent from './pagination';
+import ClipLoader from 'react-spinners/ClipLoader';
 import '../index.css';
 
 const Grid: React.FC<gridProps> = ({
   data,
+  search = true,
+  jsonExport = true,
   color = '#406882',
   height,
   variant = 'default',
@@ -40,8 +42,6 @@ const Grid: React.FC<gridProps> = ({
     column: '',
     status: 0,
   });
-  const fileName = 'download';
-  const exportType = exportFromJSON.types?.csv;
 
   const onRowSelection = (value: any, id: number) => {
     value ? setSelected([...selected, id]) : setSelected(selected.filter((v) => v !== id));
@@ -165,44 +165,16 @@ const Grid: React.FC<gridProps> = ({
       {/* Grid */}
       <div
         dir={`${rtl && 'rtl'}`}
-        className="overflow-hidden rounded-xl border border-dustyGray w-full"
+        className={`${variant !== 'stripe' ? 'border border-lightGray' : 'p-6'} 
+        overflow-hidden rounded-xl w-full`}
         id="table-container"
       >
         {/* Grid toolbar */}
-        <div id="table-toolbar" className={` ${variant == 'stripe' && 'border-b '} flex justify-between py-2 px-8`}>
-          <div
-            className="flex cursor-pointer items-center"
-            onClick={() => exportFromJSON({ data, fileName, exportType })}
-            id="export-button"
-          >
-            <Download {...{ color }} />
-            <p style={{ color: color }} className="ml-2 md:visible invisible" id="export-text">
-              {rtl ? 'تصدير اكسل' : 'Excel export'}
-            </p>
-          </div>
+        {(search || jsonExport) && (
+          <GridToolbar {...{ rtl, data, color, search, jsonExport, searchValue, setSearchValue }} />
+        )}
 
-          <label className="relative block text-gray-400 focus-within:text-gray-600" id="search-label">
-            <div
-              className={` ${
-                rtl ? 'left-1' : 'right-1'
-              } pointer-events-none absolute top-1/2 -translate-y-1/2 mt-[2px] transform`}
-              id="search-icon-container"
-            >
-              <Search {...{ color }} />
-            </div>
-
-            <input
-              value={searchValue}
-              placeholder={rtl ? 'البحث' : 'Search'}
-              onChange={(e: any) => setSearchValue(e.target.value)}
-              style={{ color: color }}
-              className="rounded-lg bg-lightGray px-2 py-1 outline-none"
-              id="search-input"
-            />
-          </label>
-        </div>
-
-        <div className="pb-4">
+        <div>
           <div className="overflow-y-auto" style={{ height: `${height}px` }}>
             {/* Table header */}
             <div
@@ -273,8 +245,9 @@ const Grid: React.FC<gridProps> = ({
                   key={d.id}
                   className={`flex justify-between items-center px-8 py-3 min-w-[1000px] 
                   ${pageSize > data?.length ? 'last:border-b-0' : ''} 
-                  ${variant === 'stripe' ? '' : 'border-b-2 border-lightDustyGray'} 
-                  ${variant === 'stripe' && index % 2 === 0 && 'bg-lightGray'} `}
+                  ${variant !== 'stripe' && 'border-b-2 border-lightDustyGray'} 
+                  ${variant === 'stripe' && index % 2 === 0 && 'bg-lightGray'} 
+                  ${variant === 'stripe' && index === data.length - 1 && 'border-b border-lightGray'}`}
                   id="row"
                 >
                   {onSelect !== undefined && (
@@ -321,7 +294,7 @@ const Grid: React.FC<gridProps> = ({
           {(!loading && renderedData?.length && totalRecords ? pageSize < totalRecords : pageSize < data?.length) && (
             <div
               dir="ltr"
-              className="mt-4 flex ps-4 pe-4 justify-between items-center lg:w-1/5 md:w-2/5 w-full"
+              className="my-4 flex ps-4 pe-4 justify-between items-center lg:w-1/5 md:w-2/5 w-full"
               id="pagination-container"
             >
               <PaginationComponent

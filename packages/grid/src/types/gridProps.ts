@@ -3,6 +3,8 @@ export interface gridProps {
   color?: string;
   height?: string;
   variant?: string;
+  search?: boolean;
+  jsonExport?: boolean;
   columns: { field: string; header: string; width: string }[];
   loading?: boolean;
   pageNumber?: number;
