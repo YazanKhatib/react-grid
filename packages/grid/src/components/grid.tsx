@@ -166,7 +166,7 @@ const Grid: React.FC<gridProps> = ({
       <div
         dir={`${rtl && 'rtl'}`}
         className={`${variant !== 'stripe' ? 'border border-lightGray' : 'p-6'} 
-        overflow-hidden rounded-xl w-full`}
+        overflow-hidden rounded-xl w-full bg-white`}
         id="table-container"
       >
         {/* Grid toolbar */}
@@ -294,7 +294,7 @@ const Grid: React.FC<gridProps> = ({
           {(!loading && renderedData?.length && totalRecords ? pageSize < totalRecords : pageSize < data?.length) && (
             <div
               dir="ltr"
-              className="my-4 flex ps-4 pe-4 justify-between items-center lg:w-1/5 md:w-2/5 w-full"
+              className="my-4 flex ps-4 pe-4 justify-between items-center lg:w-1/5 md:w-2/5"
               id="pagination-container"
             >
               <PaginationComponent
