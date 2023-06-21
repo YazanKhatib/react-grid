@@ -15,11 +15,12 @@ PS this package is under development, please contact me for additional features
 
 - Theme color customization by passing color prop e.g. color="red", color="#406882"
 - Images support are now added you just need to specify its type as below
-- Striped table view
 
   ```js
   { field: 'thumbnail', header: 'Thumbnail', type: 'img', width: '100' },
   ```
+
+- Striped table view
 
 ## Setup
 
@@ -79,6 +80,10 @@ const App: React.FC = () => {
 
   return (
     <Grid
+      rtl={false}
+      // variant="stipe"
+      search={false}
+      jsonExport={false}
       data={data?.products}
       onView={onView}
       onEdit={onEdit}
@@ -86,9 +91,10 @@ const App: React.FC = () => {
       loading={loading}
       columns={columns}
       pageSize={10}
-      totalRecords={data?.total}
       pageNumber={pageNumber}
+      totalRecords={data?.total}
       setPageNumber={setPageNumber}
+      onSelect={(ids: any) => alert(ids)}
     />
   );
 };
@@ -100,13 +106,15 @@ const App: React.FC = () => {
 | --------------- | -------------------------------------------------- | ----------------------------------- |
 | `data`          | any                                                | Data source                         |
 | `color`         | string                                             | e.g. "red" or "#406882"             |
-| `columns`       | { field: string; header: string; width: string }[] | Columns shape                       |
+| `columns`       | { field: string; header: string; width: string }[] | columns data shape                  |
 | `variant`       | string                                             | stripe                              |
 | `height`        | string                                             | Set the grid height                 |
-| `rtl`           | boolean                                            | defaultValue: "ltr", RTL support    |
+| `rtl`           | boolean                                            | RTL support for arabic              |
+| `search`        | boolean                                            | display search input                |
+| `jsonExport`    | boolean                                            | display export option               |
 | `loading`       | boolean                                            | defaultValue: false                 |
 | `pageNumber`    | number                                             | defaultValue: 1                     |
-| `totalRecords`  | number                                             | Used only with frontend pagination. |
+| `totalRecords`  | number                                             | used only with frontend pagination. |
 | `onView`        | (id: string) => void                               |                                     |
 | `onEdit`        | (id: string) => void                               |                                     |
 | `onDelete`      | (id: string) => void                               |                                     |
