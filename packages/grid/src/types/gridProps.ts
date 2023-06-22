@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export interface gridProps {
   data: any;
   color?: string;
@@ -11,6 +13,9 @@ export interface gridProps {
   pageSize?: number;
   totalRecords?: number;
   rtl?: boolean;
+  viewIcon?: ReactNode;
+  editIcon?: ReactNode;
+  deleteIcon?: ReactNode;
   onView?: (id: string) => void;
   onEdit?: (id: string) => void;
   onDelete?: (id: string) => void;

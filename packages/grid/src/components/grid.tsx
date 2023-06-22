@@ -20,6 +20,9 @@ const Grid: React.FC<gridProps> = ({
   pageNumber = 1,
   totalRecords,
   rtl = false,
+  viewIcon,
+  editIcon,
+  deleteIcon,
   onView,
   onEdit,
   onDelete,
@@ -266,23 +269,24 @@ const Grid: React.FC<gridProps> = ({
                       {type === 'img' ? <img src={getProp(d, field)} alt={field} /> : getProp(d, field)}
                     </p>
                   ))}
-                  {(onView !== undefined || onEdit !== undefined || onDelete !== undefined) && (
+
+                  {(!!onView || !!onEdit || !!onDelete) && (
                     <div className="flex" style={{ width: '7%' }} id="actions-row">
-                      {onView !== undefined && (
+                      {!!onView && (
                         <button className="me-2" onClick={() => onView!(d)} id="view-button">
-                          <Eye {...{ color }} />
+                          {viewIcon ? viewIcon : <Eye {...{ color }} />}
                         </button>
                       )}
 
-                      {onEdit !== undefined && (
+                      {!!onEdit && (
                         <button className="me-2" onClick={() => onEdit!(d)} id="edit-button">
-                          <Pencil {...{ color }} />
+                          {editIcon ? editIcon : <Pencil {...{ color }} />}
                         </button>
                       )}
 
-                      {onDelete !== undefined && (
+                      {!!onDelete && (
                         <button onClick={() => onDelete!(d)} id="delete-button">
-                          <Trash {...{ color }} />
+                          {deleteIcon ? deleteIcon : <Trash {...{ color }} />}
                         </button>
                       )}
                     </div>

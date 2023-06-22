@@ -21,6 +21,7 @@ PS this package is under development, please contact me for additional features
   ```
 
 - Striped table view
+- Custom actions icons
 
 ## Setup
 
@@ -117,6 +118,9 @@ const App: React.FC = () => {
 | `loading`       | boolean                                            | defaultValue: false                 |
 | `pageNumber`    | number                                             | defaultValue: 1                     |
 | `totalRecords`  | number                                             | used only with frontend pagination. |
+| `viewIcon`      | ReactNode                                          |                                     |
+| `editIcon`      | ReactNode                                          |                                     |
+| `deleteIcon`    | ReactNode                                          |                                     |
 | `onView`        | (id: string) => void                               |                                     |
 | `onEdit`        | (id: string) => void                               |                                     |
 | `onDelete`      | (id: string) => void                               |                                     |
