@@ -248,7 +248,7 @@ const Grid: React.FC<gridProps> = ({
                   key={d.id}
                   className={`flex justify-between items-center px-8 py-3 min-w-[1000px] 
                   ${pageSize > data?.length ? 'last:border-b-0' : ''} 
-                  ${variant !== 'stripe' && 'border-b-2 border-lightDustyGray'} 
+                  ${variant !== 'stripe' && 'border-b border-lightDustyGray'} 
                   ${variant === 'stripe' && index % 2 === 0 && 'bg-lightGray'} 
                   ${variant === 'stripe' && index === data.length - 1 && 'border-b border-lightGray'}`}
                   id="row"
@@ -296,15 +296,17 @@ const Grid: React.FC<gridProps> = ({
           </div>
 
           {(!loading && renderedData?.length && totalRecords ? pageSize < totalRecords : pageSize < data?.length) && (
-            <div
-              dir="ltr"
-              className="my-4 flex ps-4 pe-4 justify-between items-center lg:w-1/5 md:w-2/5"
-              id="pagination-container"
-            >
-              <PaginationComponent
-                {...{ paginate, pageNumber, color }}
-                pages={totalRecords ? Math.ceil(totalRecords / pageSize) : Math.ceil(data?.length / pageSize)}
-              />
+            <div className={` ${variant === 'stripe' && 'bg-lightGray rounded-b-xl'} py-3`}>
+              <div
+                dir="ltr"
+                className="flex ps-4 pe-4 justify-between items-center lg:w-1/5 md:w-2/5"
+                id="pagination-container"
+              >
+                <PaginationComponent
+                  {...{ paginate, pageNumber, color }}
+                  pages={totalRecords ? Math.ceil(totalRecords / pageSize) : Math.ceil(data?.length / pageSize)}
+                />
+              </div>
             </div>
           )}
 
